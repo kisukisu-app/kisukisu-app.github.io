@@ -23,10 +23,9 @@ h1 { font-size: clamp(48px, 9vw, 104px); line-height: 1.1; letter-spacing: -2px;
 h1 em { font-style: normal; color: var(--accent); background: var(--pop); border-radius: 999px; padding: 0 16px; }
 .promises { font-size: clamp(22px, 3vw, 30px); font-weight: 800; margin: 0 0 28px; }
 .cta { display: inline-flex; align-items: center; gap: 10px; background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 800; font-size: 18px; border-radius: 999px; padding: 16px 28px; }
-.cta.ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); margin-left: 8px; }
 video { width: 100%; border-radius: 24px; margin-top: 40px; border: 1px solid var(--line); display: block; }
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
-@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } .cta.ghost { margin: 12px 0 0; } }
+@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
 .card h2 { margin: 0 0 6px; font-size: 22px; font-weight: 800; }
 .card p { margin: 0; color: var(--ink2); font-weight: 600; line-height: 1.5; }
@@ -43,14 +42,13 @@ footer a { color: inherit; }
   <h1>Talk messy.<br>Send it <em>clean.</em></h1>
   <p class="promises">Free. No sign-up. Any app.</p>
   <a class="cta" href="[PLAY STORE LINK]">Get it on Google Play</a>
-  <a class="cta ghost" href="[GITHUB REPO LINK]">Source on GitHub</a>
   <video src="assets/kisukisu-hero.mp4" poster="assets/kisukisu-hero.jpg" controls playsinline preload="metadata" aria-label="KisuKisu in 27 seconds"></video>
   <div class="grid">
     <div class="card"><h2>Talk messy</h2><p>Ums, repeats and "I mean" get cleaned up. What lands is the sentence you meant.</p></div>
     <div class="card"><h2>Any app</h2><p>A small bubble sits by your keyboard in every app. Tap to talk, or hold for a quick line.</p></div>
     <div class="card"><h2>Works offline</h2><p>The AI runs on your phone. Airplane mode, no signal, no problem. Your voice never leaves it.</p></div>
   </div>
-  <footer><span>© 2026 KisuKisu</span><a href="privacy.html">Privacy</a><a href="[GITHUB REPO LINK]">GitHub</a><a href="mailto:[YOUR CONTACT EMAIL]">Contact</a></footer>
+  <footer><span>© 2026 KisuKisu</span><a href="privacy.html">Privacy</a><a href="mailto:[YOUR CONTACT EMAIL]">Contact</a></footer>
 </main>
 </body>
 </html>
