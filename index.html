@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KisuKisu</title>
+<meta name="description" content="Offline AI voice typing for Android. Free. No sign-up. Any app.">
+<meta property="og:title" content="KisuKisu: offline AI voice typing">
+<meta property="og:description" content="Talk messy. Send it clean. Free. No sign-up. Any app.">
+<meta property="og:image" content="assets/kisukisu-hero.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #EAF0F5; --dots: #D2DCE6; --card: #FFFFFF; --ink: #16202B; --ink2: #5B6B7C; --accent: #2F6A9C; --pop: #D6E6F3; --line: #DCE4EC; }
+@media (prefers-color-scheme: dark) { :root { --bg: #0E1116; --dots: #1F252D; --card: #161B22; --ink: #EEF2F6; --ink2: #93A1B0; --accent: #8DB6DC; --pop: rgba(110,156,198,.28); --line: #28303A; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); background-image: radial-gradient(var(--dots) 1.4px, transparent 1.5px); background-size: 26px 26px; color: var(--ink); font-family: Nunito, system-ui, sans-serif; }
+main { max-width: 1040px; margin: 0 auto; padding: 40px 16px 64px; }
+.lock { display: flex; align-items: center; gap: 14px; }
+.lock b { font-size: 26px; font-weight: 800; display: block; line-height: 1; }
+.lock span { color: var(--ink2); font-weight: 800; font-size: 15px; }
+h1 { font-size: clamp(48px, 9vw, 104px); line-height: 1.1; letter-spacing: -2px; margin: 48px 0 16px; font-weight: 800; }
+h1 em { font-style: normal; color: var(--accent); background: var(--pop); border-radius: 999px; padding: 0 16px; }
+.promises { font-size: clamp(22px, 3vw, 30px); font-weight: 800; margin: 0 0 28px; }
+.cta { display: inline-flex; align-items: center; gap: 10px; background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 800; font-size: 18px; border-radius: 999px; padding: 16px 28px; }
+.cta.ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); margin-left: 8px; }
+video { width: 100%; border-radius: 24px; margin-top: 40px; border: 1px solid var(--line); display: block; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
+@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } .cta.ghost { margin: 12px 0 0; } }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+.card h2 { margin: 0 0 6px; font-size: 22px; font-weight: 800; }
+.card p { margin: 0; color: var(--ink2); font-weight: 600; line-height: 1.5; }
+footer { margin-top: 56px; color: var(--ink2); font-weight: 700; font-size: 15px; display: flex; gap: 20px; flex-wrap: wrap; }
+footer a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <div class="lock">
+    <svg width="52" height="52" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6E9CC6"/><stop offset="1" stop-color="#3F76A4"/></linearGradient></defs><circle cx="50" cy="50" r="50" fill="url(#g)"/><path transform="translate(7 7) scale(0.86)" fill="#fff" d="M26.7,28.5 A25.43,25.43 0 0,0 26.7,71.5 A25.43,25.43 0 0,0 26.7,28.5 Z M45.25,22.05 A4.75,4.75 0 0,1 54.75,22.05 L54.75,77.95 A4.75,4.75 0 0,1 45.25,77.95 Z M73.3,28.5 A25.43,25.43 0 0,0 73.3,71.5 A25.43,25.43 0 0,0 73.3,28.5 Z"/></svg>
+    <div><b>KisuKisu</b><span>Offline AI voice typing.</span></div>
+  </div>
+  <h1>Talk messy.<br>Send it <em>clean.</em></h1>
+  <p class="promises">Free. No sign-up. Any app.</p>
+  <a class="cta" href="[PLAY STORE LINK]">Get it on Google Play</a>
+  <a class="cta ghost" href="[GITHUB REPO LINK]">Source on GitHub</a>
+  <video src="assets/kisukisu-hero.mp4" poster="assets/kisukisu-hero.jpg" controls playsinline preload="metadata" aria-label="KisuKisu in 27 seconds"></video>
+  <div class="grid">
+    <div class="card"><h2>Talk messy</h2><p>Ums, repeats and "I mean" get cleaned up. What lands is the sentence you meant.</p></div>
+    <div class="card"><h2>Any app</h2><p>A small bubble sits by your keyboard in every app. Tap to talk, or hold for a quick line.</p></div>
+    <div class="card"><h2>Works offline</h2><p>The AI runs on your phone. Airplane mode, no signal, no problem. Your voice never leaves it.</p></div>
+  </div>
+  <footer><span>© 2026 KisuKisu</span><a href="privacy.html">Privacy</a><a href="[GITHUB REPO LINK]">GitHub</a><a href="mailto:[YOUR CONTACT EMAIL]">Contact</a></footer>
+</main>
+</body>
+</html>

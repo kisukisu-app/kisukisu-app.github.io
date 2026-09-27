@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KisuKisu Privacy Policy</title>
+<meta name="description" content="How KisuKisu, offline AI voice typing for Android, handles your data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #EAF0F5; --card: #FFFFFF; --ink: #16202B; --ink2: #5B6B7C; --accent: #2F6A9C; --line: #DCE4EC; }
+@media (prefers-color-scheme: dark) { :root { --bg: #0E1116; --card: #161B22; --ink: #EEF2F6; --ink2: #93A1B0; --accent: #8DB6DC; --line: #28303A; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: Nunito, system-ui, sans-serif; font-weight: 500; line-height: 1.6; }
+main { max-width: 760px; margin: 0 auto; padding: 48px 16px 80px; }
+a { color: var(--accent); }
+header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+header a { text-decoration: none; color: inherit; font-weight: 800; font-size: 20px; display: flex; align-items: center; gap: 12px; }
+h1 { font-size: 40px; line-height: 1.1; margin: 0 0 8px; font-weight: 800; letter-spacing: -1px; }
+h2 { font-size: 22px; margin: 36px 0 8px; font-weight: 800; }
+.muted { color: var(--ink2); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px 24px; margin: 20px 0; }
+ul { padding-left: 22px; }
+li { margin: 6px 0; }
+</style>
+</head>
+<body>
+<main>
+<header><a href="./"><svg width="36" height="36" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="#4682B4"/><path transform="translate(7 7) scale(0.86)" fill="#fff" d="M26.7,28.5 A25.43,25.43 0 0,0 26.7,71.5 A25.43,25.43 0 0,0 26.7,28.5 Z M45.25,22.05 A4.75,4.75 0 0,1 54.75,22.05 L54.75,77.95 A4.75,4.75 0 0,1 45.25,77.95 Z M73.3,28.5 A25.43,25.43 0 0,0 73.3,71.5 A25.43,25.43 0 0,0 73.3,28.5 Z"/></svg>KisuKisu</a></header>
+
+<h1>Privacy Policy</h1>
+<p class="muted">Effective 27 September 2026. Applies to the KisuKisu app for Android (package <code>com.kisukisu.app</code>).</p>
+
+<div class="card">
+<strong>The short version.</strong> KisuKisu turns your voice into text on your phone. There is no account, no sign-up, no ads, no analytics and no tracking. By default your voice and your text never leave your device. The only time anything is sent anywhere is if you choose to connect a cloud AI provider with your own key (see below).
+</div>
+
+<h2>What stays on your phone</h2>
+<ul>
+<li><strong>Your voice.</strong> Audio from the microphone is turned into text by a speech model running on your phone. It is never uploaded.</li>
+<li><strong>Your dictations.</strong> If "Keep history" is on, recent dictations are saved on your phone so you can copy, fix or delete them. Turn it off, or use "Clear history", at any time in Settings.</li>
+<li><strong>Kept recordings.</strong> If a dictation fails, its recording can be kept on your phone so you can retry it. You choose how long they are kept, or turn this off, in Settings.</li>
+<li><strong>Your words.</strong> Your dictionary, the corrections the app learns from, your style examples and per-app tone settings are all stored on your phone.</li>
+<li><strong>Contacts (optional).</strong> If you use "Import from contacts", the app reads contact names on your phone so it can spell them correctly. They are matched on your phone and never uploaded.</li>
+</ul>
+<p>All of this is deleted when you uninstall the app or clear its data.</p>
+
+<h2>What goes over the internet</h2>
+<ul>
+<li><strong>Model downloads.</strong> The first time you set up, and whenever you choose another model, the app downloads model files from Hugging Face (huggingface.co), and possibly GitHub, like any file download. Nothing about you or your dictations is sent. Those sites see a normal download request, including your IP address, under their own privacy policies. Models you add yourself from a link are downloaded from the address you give.</li>
+<li><strong>Cloud providers, only if you turn them on.</strong> In Settings you can choose to use a cloud speech or AI provider (for example OpenAI, Groq, Anthropic, OpenRouter or Vercel AI Gateway) with your own API key. If you do, the audio or text of each dictation is sent to that provider to be processed, under that provider's own privacy policy and your agreement with them. Your API key is stored on your phone. If you never set this up, nothing is sent.</li>
+</ul>
+
+<h2>Permissions and why</h2>
+<ul>
+<li><strong>Microphone</strong>: to hear you while you dictate. It is used only while the bubble is listening.</li>
+<li><strong>Accessibility service</strong>: to put your dictated text into the text box you are typing in, and to notice when a text box and keyboard are open so the bubble can appear. KisuKisu does not collect, store or send the content of your screen, and the service is not used for anything else. You are asked for consent, with an explanation, before you turn it on, and you can turn it off at any time in Android's settings.</li>
+<li><strong>Display over other apps</strong>: to show the floating bubble next to your keyboard.</li>
+<li><strong>Notifications</strong>: for the bubble's ongoing notification and an optional "fix a word" reminder after a dictation.</li>
+<li><strong>Contacts (optional)</strong>: only for "Import from contacts", as described above.</li>
+<li><strong>Run at startup</strong>: to bring the bubble back after your phone restarts, if you had it on.</li>
+<li><strong>Internet</strong>: for model downloads, and for cloud providers if you choose to use one.</li>
+</ul>
+
+<h2>What we do not do</h2>
+<ul>
+<li>No account and no sign-up.</li>
+<li>No advertising, and no advertising or tracking IDs.</li>
+<li>No analytics, crash reporting or usage tracking.</li>
+<li>We do not sell or share your data. We never receive your dictations in the first place.</li>
+</ul>
+
+<h2>Children</h2>
+<p>KisuKisu is a general productivity tool and is not directed at children under 13.</p>
+
+<h2>Changes</h2>
+<p>If this policy changes, the new version will be posted on this page with a new effective date.</p>
+
+<h2>Contact</h2>
+<p>Questions about privacy: <a href="mailto:[YOUR CONTACT EMAIL]">[YOUR CONTACT EMAIL]</a></p>
+</main>
+</body>
+</html>
