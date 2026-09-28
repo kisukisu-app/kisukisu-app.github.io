@@ -29,6 +29,19 @@ video { width: 100%; border-radius: 24px; margin-top: 40px; border: 1px solid va
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
 .card h2 { margin: 0 0 6px; font-size: 22px; font-weight: 800; }
 .card p { margin: 0; color: var(--ink2); font-weight: 600; line-height: 1.5; }
+.beta { margin-top: 56px; background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 28px; }
+.beta h2 { margin: 0 0 6px; font-size: 32px; font-weight: 800; }
+.beta .lead { margin: 0 0 20px; color: var(--ink2); font-weight: 600; line-height: 1.5; }
+.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; gap: 14px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 44px 1fr auto; grid-template-rows: auto auto; column-gap: 14px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); }
+.steps li:first-child { border-top: 0; }
+.steps li::before { content: counter(s); grid-row: 1 / 3; width: 44px; height: 44px; border-radius: 22px; background: var(--pop); color: var(--accent); font-weight: 800; font-size: 20px; display: grid; place-items: center; }
+.steps b { font-size: 19px; }
+.steps span { grid-column: 2; color: var(--ink2); font-weight: 600; font-size: 15px; line-height: 1.45; }
+.steps span a { color: var(--accent); }
+.steps .cta { grid-column: 3; grid-row: 1 / 3; }
+.cta.small { font-size: 15px; padding: 11px 18px; white-space: nowrap; }
+@media (max-width: 720px) { .steps li { grid-template-columns: 44px 1fr; } .steps li::before { grid-row: 1 / 4; align-self: start; } .steps .cta { grid-column: 2; grid-row: auto; justify-self: start; margin-top: 10px; } }
 footer { margin-top: 56px; color: var(--ink2); font-weight: 700; font-size: 15px; display: flex; gap: 20px; flex-wrap: wrap; }
 footer a { color: inherit; }
 </style>
@@ -41,13 +54,22 @@ footer a { color: inherit; }
   </div>
   <h1>Talk messy.<br>Send it <em>clean.</em></h1>
   <p class="promises">Free. No sign-up. Any app.</p>
-  <span class="cta">Coming soon to Google Play</span>
+  <a class="cta" href="#beta">Join the Android beta</a>
   <video src="assets/kisukisu-hero.mp4" poster="assets/kisukisu-hero.jpg" controls playsinline preload="metadata" aria-label="KisuKisu in 27 seconds"></video>
   <div class="grid">
     <div class="card"><h2>Talk messy</h2><p>On-device AI cleans up the ums, repeats and "I mean"s. What lands is the sentence you meant.</p></div>
     <div class="card"><h2>Any app</h2><p>A small bubble sits by your keyboard in every app. Tap to talk, or hold for a quick line.</p></div>
     <div class="card"><h2>Works offline</h2><p>The AI runs on your phone. Airplane mode, no signal, no problem. Your voice never leaves it.</p></div>
   </div>
+  <section id="beta" class="beta">
+    <h2>Join the beta</h2>
+    <p class="lead">KisuKisu is in testing on Google Play. Android phones only. Use the same Google account you use in the Play Store.</p>
+    <ol class="steps">
+      <li><b>Join the tester group</b><span>One tap, with your Google account.</span><a class="cta small" href="https://groups.google.com/g/kisukisu-testers">Join the group</a></li>
+      <li><b>Accept the invite</b><span>Opens Google Play's tester page. Tap "Become a tester".</span><a class="cta small" href="https://play.google.com/apps/testing/com.kisukisu.app">Become a tester</a></li>
+      <li><b>Install from Google Play</b><span>Then keep it installed. Feedback is welcome at <a href="mailto:akhil.srinivas25@gmail.com">akhil.srinivas25@gmail.com</a>.</span><a class="cta small" href="https://play.google.com/store/apps/details?id=com.kisukisu.app">Open in Google Play</a></li>
+    </ol>
+  </section>
   <footer><span>© 2026 KisuKisu</span><span>Made by <a href="https://github.com/akhilsrini">Akhil Srinivas</a></span><a href="privacy.html">Privacy</a><a href="mailto:akhil.srinivas25@gmail.com">Contact</a></footer>
 </main>
 </body>
