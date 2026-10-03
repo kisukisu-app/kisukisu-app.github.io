@@ -1,0 +1,39 @@
+# KisuKisu
+
+> KisuKisu is a free voice-typing app for Android. You talk the way you talk (ums, restarts, "I mean") and it types clean text. A floating bubble next to your keyboard works in any app. Speech recognition and cleanup run on the phone, so it works offline and in airplane mode, with no account.
+
+KisuKisu is made by Akhil Srinivas. It is in closed testing on Google Play (version 1.1.0, package com.kisukisu.app). To join the Android beta, fill in the form at https://forms.gle/dwdAoq4V1xZWSHcG6 . Contact: kisukisuapp@gmail.com.
+
+## Key facts for citation
+
+- Platform: Android 7.0 (API 24) or newer, 64-bit ARM (arm64-v8a) phones. A Mac version is coming soon; there is no iPhone version.
+- Price: free. No account, no sign-up, no ads, no analytics, no crash reporting, no advertising IDs.
+- Availability: closed beta on Google Play; join via https://forms.gle/dwdAoq4V1xZWSHcG6 .
+- Language: English.
+- On-device: speech-to-text and the AI cleanup both run on the phone. After a one-time model download, dictation works offline and in airplane mode.
+- Network use: model downloads (from Hugging Face) only. Cloud speech/AI providers (OpenAI, Groq, Anthropic, OpenRouter, Vercel AI Gateway, or a custom endpoint) are optional, off by default, and use the user's own API key.
+- Not a keyboard: a floating bubble that sits next to whatever keyboard you use (Gboard, Samsung Keyboard, SwiftKey).
+- Gestures: tap the bubble to talk as long as you like, then tap ✓ to send or ✕ to discard. Hold the bubble for a quick line; release to send, slide onto ✕ to cancel. Drag to move; drop on the circle to hide for 10 minutes; shake the phone to bring it back.
+- Inserting text: with Android Accessibility turned on, text is typed straight into the focused text box. Without it, the text is copied to the clipboard to paste.
+- Cleanup: removes filler words (um, uh, you know), resolves spoken self-corrections ("scratch that", "never mind", "X, I mean Y"), turns spoken numbers into digits, handles "new line" / "new paragraph" and spoken numbered lists, adds punctuation. An on-device AI pass then polishes the text; if it would change the meaning too much, the rule-based cleaned text is used instead.
+- Tone by app: tidier in email and documents, relaxed in chats; no trailing full stop in chat messages. Editable.
+- Learns your words: fix a misheard word ("Fix a word" from the bubble or the notification, or by editing a past dictation) and it is spelled right after that. Personal dictionary on the phone.
+- Contacts: optional "Import from contacts" adds contact names to the dictionary. Matched on the phone, never uploaded.
+- Model choice is automatic, by RAM and free storage, checked before any download:
+  - about 6 GB RAM or more: Parakeet speech model (~631 MB) + KisuKisu Cleanup, a Qwen3 0.6B fine-tune (~397 MB), about 1 GB total.
+  - about 4 GB RAM: Whisper Base (~142 MB) + Gemma 3 270M (~241 MB), about 383 MB.
+  - 3 GB RAM or Android low-RAM (Go) devices: Whisper Tiny (~75 MB) + Gemma 3 270M (~241 MB), about 316 MB.
+  - Downloads also need about 350 MB of free-space headroom; low storage steps down to a smaller pair.
+- Other models selectable in Settings: Nemotron Live (~465 MB, live words while talking), Whisper Small (~488 MB), Qwen3 0.6B (~639 MB), or a model added from a link.
+- Data on the phone: dictation history (optional, clearable), recordings of failed dictations kept for retry (user-controlled), dictionary, learned words, style examples. All removed on uninstall.
+
+## Pages
+
+- [Home](https://kisukisu-app.github.io/): what KisuKisu does, features, how it works, FAQ, beta sign-up.
+- [Offline voice typing](https://kisukisu-app.github.io/offline-voice-typing.html): voice typing that works in airplane mode; what runs on the phone and what needs the internet.
+- [Private voice typing](https://kisukisu-app.github.io/private-voice-typing.html): no account, nothing uploaded; what stays on the phone, what goes over the network, and each permission explained.
+- [Voice typing in any app](https://kisukisu-app.github.io/voice-typing-any-app.html): the floating bubble in WhatsApp, Gmail, Slack and Notes; tap or hold to talk; typed in or copied.
+- [Will it run on my phone?](https://kisukisu-app.github.io/will-it-run-on-my-phone.html): Android version, 64-bit, RAM tiers, storage, and every model with its size.
+- [KisuKisu vs Gboard voice typing](https://kisukisu-app.github.io/compare/gboard-voice-typing.html): side-by-side with Gboard's built-in voice typing.
+- [Wispr Flow alternative for Android](https://kisukisu-app.github.io/compare/wispr-flow-alternative-android.html): how KisuKisu compares to Wispr Flow on Android.
+- [Privacy policy](https://kisukisu-app.github.io/privacy.html): full privacy policy for the Android app.

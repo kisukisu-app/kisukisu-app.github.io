@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline Voice Typing for Android (2026): Works in Airplane Mode · KisuKisu</title>
+<meta name="description" content="KisuKisu is voice typing for Android that works offline. Speech recognition and AI cleanup run on your phone, so it works in airplane mode with no signal. Free, no account.">
+<link rel="canonical" href="https://kisukisu-app.github.io/offline-voice-typing.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#EAF0F5">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="KisuKisu">
+<meta property="og:title" content="Offline Voice Typing for Android (2026): Works in Airplane Mode · KisuKisu">
+<meta property="og:description" content="KisuKisu is voice typing for Android that works offline. Speech recognition and AI cleanup run on your phone, so it works in airplane mode with no signal. Free, no account.">
+<meta property="og:url" content="https://kisukisu-app.github.io/offline-voice-typing.html">
+<meta property="og:image" content="https://kisukisu-app.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KisuKisu: Talk messy. Send it clean. A phone with the voice bubble above the keyboard.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Offline Voice Typing for Android (2026): Works in Airplane Mode · KisuKisu">
+<meta name="twitter:description" content="KisuKisu is voice typing for Android that works offline. Speech recognition and AI cleanup run on your phone, so it works in airplane mode with no signal. Free, no account.">
+<meta name="twitter:image" content="https://kisukisu-app.github.io/assets/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+  {
+   "@type": "ListItem",
+   "position": 1,
+   "name": "KisuKisu",
+   "item": "https://kisukisu-app.github.io/"
+  },
+  {
+   "@type": "ListItem",
+   "position": 2,
+   "name": "Offline voice typing",
+   "item": "https://kisukisu-app.github.io/offline-voice-typing.html"
+  }
+ ]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Do I need the internet at all?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Once. KisuKisu downloads its speech and cleanup models the first time you set it up. After that, dictation needs no connection. You only go online again if you choose a different model."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Does it really work in airplane mode?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. Turn on airplane mode, turn off Wi-Fi, and dictate. Speech recognition, cleanup, your dictionary and your learned words are all on the phone."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How big is the download?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "It depends on your phone. About 316 MB on a 3 GB phone, about 383 MB on a 4 GB phone, and about 1 GB on a 6 GB phone or bigger. Exact model sizes."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is the offline AI as good as cloud dictation?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "On phones with 6 GB of memory or more, KisuKisu uses its largest, most accurate speech model. Smaller phones get lighter models that are a little less accurate on long or noisy speech. You can switch models any time in Settings."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What if the cleanup model hasn't finished downloading?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "You can still dictate. KisuKisu tidies the text with its built-in rules (fillers, numbers, “new line”) and adds the AI cleanup once the model is in."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How is this different from my keyboard's voice typing?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Your keyboard types what you say. KisuKisu also removes the ums, restarts and “I mean”s, on the phone. KisuKisu vs Gboard."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Which languages does it understand?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "English. Other languages are not supported yet."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I get KisuKisu?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "KisuKisu is in closed testing on Google Play. Fill in the short form with the Google account you use in the Play Store. We add you, usually within a day, and you install it from Google Play."
+   }
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="lock" href="./" aria-label="KisuKisu home"><svg width="44" height="44" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6E9CC6"/><stop offset="1" stop-color="#3F76A4"/></linearGradient></defs><circle cx="50" cy="50" r="50" fill="url(#g)"/><path transform="translate(7 7) scale(0.86)" fill="#fff" d="M26.7,28.5 A25.43,25.43 0 0,0 26.7,71.5 A25.43,25.43 0 0,0 26.7,28.5 Z M45.25,22.05 A4.75,4.75 0 0,1 54.75,22.05 L54.75,77.95 A4.75,4.75 0 0,1 45.25,77.95 Z M73.3,28.5 A25.43,25.43 0 0,0 73.3,71.5 A25.43,25.43 0 0,0 73.3,28.5 Z"/></svg><div><b>KisuKisu</b><span>Offline AI voice typing</span></div></a>
+  <nav aria-label="Main"><a class="nl" href="private-voice-typing.html">Private</a><a class="nl" href="voice-typing-any-app.html">Any app</a><a class="nl" href="will-it-run-on-my-phone.html">Will it run?</a><a class="cta small" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the beta</a></nav>
+</header>
+<main>
+
+<nav class="crumbs" aria-label="Breadcrumb"><a href="./">KisuKisu</a><span aria-hidden="true">/</span>Offline voice typing</nav>
+<section class="hero">
+  <div class="split">
+    <div>
+      <p class="kicker">No signal? Still typing.</p>
+      <h1 class="mid">Voice typing that works <em>offline.</em></h1>
+      <p class="lede">On a plane. In the subway. On a hike. KisuKisu turns your voice into clean text right on your phone. No connection needed after setup.</p>
+      <a class="cta" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the Android beta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <p class="under">Free · No account · Android 7.0+</p>
+    </div>
+    <div class="reel"><video src="assets/reels/offline.mp4" poster="assets/reel-poster.jpg" muted autoplay loop playsinline preload="metadata" aria-label="KisuKisu dictating in airplane mode"></video></div>
+  </div>
+</section>
+
+<section>
+  <h2>Why offline matters</h2>
+  <div class="grid">
+<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div><h3>Airplane mode works</h3><p>Speech recognition runs on the phone. So does the AI that cleans up your words. No server in the loop.</p></div>
+<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><h3>Nothing to wait for</h3><p>No upload, no round trip, no “check your connection”. Your words come from your own phone.</p></div>
+<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3>Private by default</h3><p>If nothing is sent, nothing can leak. Your voice stays on your phone.</p></div>
+</div>
+</section>
+
+<section>
+  <h2>How it works</h2>
+  <ol class="steps"><li><b>Set up once</b><span>KisuKisu picks models that fit your phone and downloads them once. About 316 MB to 1 GB.</span></li><li><b>Go offline</b><span>Airplane mode, no Wi-Fi, no signal. It doesn't matter.</span></li><li><b>Tap and talk</b><span>Tap the bubble, talk, tap ✓. Clean text lands in the box.</span></li></ol>
+</section>
+
+<section>
+  <h2>What runs where</h2>
+  <div class="facts"><dl><div class="row"><dt>Speech to text</dt><dd>On your phone</dd></div><div class="row"><dt>Cleanup (ums, restarts, punctuation)</dt><dd>On your phone</dd></div><div class="row"><dt>Your dictionary and learned words</dt><dd>On your phone</dd></div><div class="row"><dt>Contact names you import</dt><dd>On your phone</dd></div><div class="row"><dt>Internet needed</dt><dd>Only to download models: the first time, or when you pick a new one. And only if you choose to connect a cloud AI with your own key.</dd></div><div class="row"><dt>Account</dt><dd>None</dd></div></dl></div>
+</section>
+
+<section>
+  <h2>Questions</h2>
+  <div class="faq">
+<details><summary>Do I need the internet at all?</summary><div><p>Once. KisuKisu downloads its speech and cleanup models the first time you set it up. After that, dictation needs no connection. You only go online again if you choose a different model.</p></div></details>
+<details><summary>Does it really work in airplane mode?</summary><div><p>Yes. Turn on airplane mode, turn off Wi-Fi, and dictate. Speech recognition, cleanup, your dictionary and your learned words are all on the phone.</p></div></details>
+<details><summary>How big is the download?</summary><div><p>It depends on your phone. About 316 MB on a 3 GB phone, about 383 MB on a 4 GB phone, and about 1 GB on a 6 GB phone or bigger. <a href="will-it-run-on-my-phone.html">Exact model sizes</a>.</p></div></details>
+<details><summary>Is the offline AI as good as cloud dictation?</summary><div><p>On phones with 6 GB of memory or more, KisuKisu uses its largest, most accurate speech model. Smaller phones get lighter models that are a little less accurate on long or noisy speech. You can switch models any time in Settings.</p></div></details>
+<details><summary>What if the cleanup model hasn't finished downloading?</summary><div><p>You can still dictate. KisuKisu tidies the text with its built-in rules (fillers, numbers, “new line”) and adds the AI cleanup once the model is in.</p></div></details>
+<details><summary>How is this different from my keyboard's voice typing?</summary><div><p>Your keyboard types what you say. KisuKisu also removes the ums, restarts and “I mean”s, on the phone. <a href="compare/gboard-voice-typing.html">KisuKisu vs Gboard</a>.</p></div></details>
+<details><summary>Which languages does it understand?</summary><div><p>English. Other languages are not supported yet.</p></div></details>
+<details><summary>How do I get KisuKisu?</summary><div><p>KisuKisu is in closed testing on Google Play. <a href="https://forms.gle/dwdAoq4V1xZWSHcG6">Fill in the short form</a> with the Google account you use in the Play Store. We add you, usually within a day, and you install it from Google Play.</p></div></details>
+</div>
+</section>
+
+<section id="beta" class="beta">
+  <h2>Works on the plane. <em>And everywhere else.</em></h2>
+  <p>KisuKisu is in closed testing on Google Play. It's free. Android only for now.</p>
+  <ol>
+    <li>Fill in a short form with the Google account you use in the Play Store.</li>
+    <li>We add you as a tester, usually within a day.</li>
+    <li>Install KisuKisu from Google Play like any other app.</li>
+  </ol>
+  <a class="cta" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the Android beta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</section>
+<section><h2 style="font-size:26px">Keep reading</h2><div class="related"><a href="private-voice-typing.html">Private voice typing</a><a href="voice-typing-any-app.html">Voice typing in any app</a><a href="will-it-run-on-my-phone.html">Will it run on my phone?</a><a href="compare/gboard-voice-typing.html">KisuKisu vs Gboard voice typing</a><a href="compare/wispr-flow-alternative-android.html">Wispr Flow alternative for Android</a><a href="privacy.html">Privacy policy</a></div></section>
+
+</main>
+<footer>
+  <div class="cols"><a href="./">Home</a><a href="offline-voice-typing.html">Offline voice typing</a><a href="private-voice-typing.html">Private voice typing</a><a href="voice-typing-any-app.html">Voice typing in any app</a><a href="will-it-run-on-my-phone.html">Will it run on my phone?</a><a href="compare/gboard-voice-typing.html">KisuKisu vs Gboard voice typing</a><a href="compare/wispr-flow-alternative-android.html">Wispr Flow alternative for Android</a><a href="privacy.html">Privacy</a></div>
+  <div class="cols fine"><span>© 2026 KisuKisu</span><span>Made by Akhil Srinivas</span><a href="mailto:kisukisuapp@gmail.com">kisukisuapp@gmail.com</a><a href="https://instagram.com/kisukisuapp">Instagram</a><a href="llms.txt">llms.txt</a></div>
+</footer>
+</div>
+</body>
+</html>
