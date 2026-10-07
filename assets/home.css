@@ -290,12 +290,12 @@ p.rise, div.rise { display: block; } .cta-row.rise { display: flex; }
 .note { color: var(--ink2); font-size: 15px; max-width: 40em; }
 @media (max-width: 1000px) { .app-phone .phone { --ps: .48 !important; } .apps-row { gap: 20px; } }
 @media (max-width: 720px) {
-  .apps-row { position: relative; height: calc(952px * .56 + 40px); gap: 0; }
+  .apps-row { position: relative; height: calc(952px * .44 + 56px); gap: 0; overflow: hidden; margin-left: -16px; margin-right: -16px; }
   .app-phone { position: absolute; left: 50%; top: 0; }
-  .app-phone .phone { --ps: .56 !important; }
-  .app-phone:nth-child(1) { z-index: 1; translate: calc(-50% - 108px) 30px; rotate: -7deg; }
+  .app-phone .phone { --ps: .44 !important; }
+  .app-phone:nth-child(1) { z-index: 1; translate: calc(-50% - 70px) 10px; rotate: -5deg; }
   .app-phone:nth-child(2) { z-index: 3; translate: -50% 0; }
-  .app-phone:nth-child(3) { z-index: 2; translate: calc(-50% + 108px) 30px; rotate: 7deg; }
+  .app-phone:nth-child(3) { z-index: 2; translate: calc(-50% + 70px) 10px; rotate: 5deg; }
   .app-phone:nth-child(1) figcaption, .app-phone:nth-child(3) figcaption { display: none; }
   .apps-row.in .app-phone:nth-child(1), .apps-row.in .app-phone:nth-child(3) { opacity: .92; }
 }
@@ -349,7 +349,13 @@ p.rise, div.rise { display: block; } .cta-row.rise { display: flex; }
 .bub-slot .kkb { transform: scale(1.5); transform-origin: 100% 0; right: 0; top: 0; }
 .bub-slot .kkb, .bub-slot .kkb .pc { transition-property: transform, opacity, width, right, background; }
 @media (max-width: 860px) { .acc-grid { grid-template-columns: 1fr; } }
-@media (max-width: 420px) { .acc-tile { padding: 20px 16px 6px; gap: 0 10px; } .bub-slot .kkb { transform: scale(1.18); } .bub-slot { height: calc(45.79px * 1.18 + 16px); } }
+@media (max-width: 600px) {
+  .acc-tile { grid-template-columns: 1fr; padding: 20px 18px 8px; gap: 0; }
+  .acc-rowlbl { padding: 6px 0 8px; }
+  .bub-slot .kkb { transform: scale(1.2); }
+  .bub-slot { height: calc(45.79px * 1.2 + 18px); }
+}
+@media (max-width: 360px) { .bub-slot .kkb { transform: scale(1.02); } .bub-slot { height: calc(45.79px * 1.02 + 18px); } }
 
 /* ---------- 6. try ---------- */
 .try { padding: 110px 0 30px; }
