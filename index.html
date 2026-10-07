@@ -21,10 +21,11 @@
 <meta name="twitter:title" content="KisuKisu: Talk messy. Send it clean.">
 <meta name="twitter:description" content="Talk messy, send it clean. KisuKisu is free voice typing for Android: it removes the ums, works in any app from a floating bubble, and runs on your phone, even in airplane mode.">
 <meta name="twitter:image" content="https://kisukisu-app.github.io/assets/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2750%27 fill=%27%234682B4%27/%3E%3Cpath fill=%27%23fff%27 transform=%27translate(7 7) scale(.86)%27 d=%27M26.7,28.5 A25.43,25.43 0 0,0 26.7,71.5 A25.43,25.43 0 0,0 26.7,28.5 Z M45.25,22.05 A4.75,4.75 0 0,1 54.75,22.05 L54.75,77.95 A4.75,4.75 0 0,1 45.25,77.95 Z M73.3,28.5 A25.43,25.43 0 0,0 73.3,71.5 A25.43,25.43 0 0,0 73.3,28.5 Z%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/home.css">
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -149,99 +150,208 @@
 </script>
 </head>
 <body>
-<div class="wrap">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="kk-logo-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="lg0"/><stop offset=".55" class="lg1"/><stop offset="1" class="lg2"/></linearGradient>
+    <symbol id="kk-mark" viewBox="0 0 100 100"><path d="M26.7,28.5 A25.43,25.43 0 0,0 26.7,71.5 A25.43,25.43 0 0,0 26.7,28.5 Z M45.25,22.05 A4.75,4.75 0 0,1 54.75,22.05 L54.75,77.95 A4.75,4.75 0 0,1 45.25,77.95 Z M73.3,28.5 A25.43,25.43 0 0,0 73.3,71.5 A25.43,25.43 0 0,0 73.3,28.5 Z"/></symbol>
+  </defs>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
 <header class="top">
-  <a class="lock" href="./" aria-label="KisuKisu home"><svg width="44" height="44" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6E9CC6"/><stop offset="1" stop-color="#3F76A4"/></linearGradient></defs><circle cx="50" cy="50" r="50" fill="url(#g)"/><path transform="translate(7 7) scale(0.86)" fill="#fff" d="M26.7,28.5 A25.43,25.43 0 0,0 26.7,71.5 A25.43,25.43 0 0,0 26.7,28.5 Z M45.25,22.05 A4.75,4.75 0 0,1 54.75,22.05 L54.75,77.95 A4.75,4.75 0 0,1 45.25,77.95 Z M73.3,28.5 A25.43,25.43 0 0,0 73.3,71.5 A25.43,25.43 0 0,0 73.3,28.5 Z"/></svg><div><b>KisuKisu</b><span>Offline AI voice typing</span></div></a>
-  <nav aria-label="Main"><a class="nl" href="offline-voice-typing.html">Offline</a><a class="nl" href="private-voice-typing.html">Private</a><a class="nl" href="voice-typing-any-app.html">Any app</a><a class="nl" href="will-it-run-on-my-phone.html">Will it run?</a><a class="cta small" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the beta</a></nav>
+  <div class="top-in">
+    <a class="lock" href="./" aria-label="KisuKisu home"><svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="url(#kk-logo-g)"/><use href="#kk-mark" transform="translate(7 7) scale(0.86)" fill="#fff"/></svg><span><b>KisuKisu</b><small>Offline AI voice typing</small></span></a>
+    <nav aria-label="Main"><a class="nl" href="/offline-voice-typing.html">Offline</a><a class="nl" href="/private-voice-typing.html">Private</a><a class="nl" href="/voice-typing-any-app.html">Any app</a><a class="nl" href="/will-it-run-on-my-phone.html">Will it run?</a><a class="cta small" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the beta</a></nav>
+  </div>
 </header>
-<main>
 
-<section class="hero">
-  <h1>Talk messy.<br>Send it <em>clean.</em></h1>
-  <p class="lede">Voice typing for Android that cleans up as you talk. Works in any app. Runs on your phone, even in airplane mode.</p>
-  <p class="promises">Free. No account. Any app.</p>
-  <a class="cta" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the Android beta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-  <p class="under">Android 7.0+ · Closed beta on Google Play</p>
-</section>
+<main id="main">
 
-<section id="demo" style="padding-top:40px">
-  <video class="demo" src="assets/kisukisu-hero.mp4" poster="assets/kisukisu-hero.jpg" controls playsinline preload="metadata" aria-label="KisuKisu in 27 seconds"></video>
-</section>
-
-<section id="problem">
-  <h2>Voice typing writes down <em>everything.</em></h2>
-  <p class="sub">Every um. Every restart. Every “wait, no”. Then you fix it by hand, or give up and type. KisuKisu gives you the sentence you meant.</p>
-  <div class="quote">
-    <div class="said"><span class="tag">You say</span>“<s>Um, so</s> can you send me the deck <s>uh</s> before our call today at <s>two, I mean</s> three?”</div>
-    <div class="got"><span class="tag">It types</span>Can you send me the deck before our call today at 3?</div>
+<!-- 1. HERO: copy + phone, then the phone gives way to the transcript card -->
+<section class="hero" aria-labelledby="hero-h">
+  <div class="hero-pin" data-scrub="hero">
+    <div class="hero-stage">
+      <div class="hero-copy">
+        <h1 id="hero-h"><span class="rise" style="--d:0">Talk messy.</span><br><span class="rise" style="--d:1">Send it <em>clean.</em></span></h1>
+        <p class="lede rise" style="--d:2">Voice typing for Android that cleans up as you talk. Works in any app. Runs on your phone, even in airplane mode.</p>
+        <div class="cta-row rise" style="--d:3">
+          <a class="cta" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the Android beta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <p class="promises">Free. No account. Any app.</p>
+        </div>
+        <p class="under rise" style="--d:4">Android 7.0+ · Closed beta on Google Play</p>
+      </div>
+      <div class="hero-phone" aria-hidden="true"><div class="phone" data-phone="hero" style="--ps:.66"></div></div>
+      <div class="hero-card-wrap">
+        <div class="glow" aria-hidden="true"></div>
+        <figure class="tcard" aria-label="A messy spoken sentence and the clean text KisuKisu types">
+          <div class="tcard-head"><span class="rec" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="tag">You say</span></div>
+          <p class="stream" data-stream="hero"></p>
+          <div class="tcard-out"><span class="tag acc">It types</span><p class="clean-line" data-clean="hero"></p></div>
+        </figure>
+        <ul class="chips" aria-label="What comes out">
+          <li style="--i:0">Ums and uhs</li><li style="--i:1">“I mean” fixes</li><li style="--i:2">Spoken numbers</li><li style="--i:3">Punctuation</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
-<section id="features">
-  <h2>What it does</h2>
-  <p class="sub">Everything runs on your phone. Nothing to sign up for.</p>
-  <div class="grid four">
-<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 11.8 19 13M17.8 6.2 19 5M3 21l9-9M12.2 6.2 11 5"/></svg></div><h3>Clean text</h3><p>Ums, uhs, repeats and false starts come out. Punctuation goes in. Spoken numbers become digits.</p></div>
-<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></div><h3>Any app</h3><p>One bubble by your keyboard. WhatsApp, Gmail, Slack, Notes. If you can type there, you can talk there.</p><a class="more" href="voice-typing-any-app.html">How it works in apps →</a></div>
-<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div><h3>Works offline</h3><p>Speech recognition and cleanup run on your phone. Airplane mode works. No signal works.</p><a class="more" href="offline-voice-typing.html">Offline details →</a></div>
-<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3>Private. No account.</h3><p>No sign-up. No ads. No analytics. Your voice is not uploaded.</p><a class="more" href="private-voice-typing.html">What stays on your phone →</a></div>
-<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v6M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-6-2.4l-3.6-3.6a2 2 0 0 1 2.8-2.8L7 15"/></svg></div><h3>Tap or hold</h3><p>Tap to talk as long as you like. Hold for a quick line and let go to send.</p></div>
-<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></div><h3>Fixes itself</h3><p>Say “scratch that” or “I mean” mid-sentence. Only the fix stays.</p></div>
-<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M9 7h6"/></svg></div><h3>Learns your words</h3><p>Fix a misheard word once. KisuKisu spells it right after that.</p></div>
-<div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><h3>Snippets</h3><p>Say “my address” and your saved address types itself. Set up your own shortcuts for things you type a lot.</p></div>
-</div>
-</section>
-
-<section id="how">
-  <h2>How it works</h2>
-  <p class="sub">Three steps. No new keyboard to learn.</p>
-  <ol class="steps"><li><b>Tap the bubble</b><span>Tap any text box. The KisuKisu bubble sits by your keyboard. Tap it.</span></li><li><b>Talk like you talk</b><span>Ums, restarts, “I mean”. Say it however it comes out.</span></li><li><b>Tap ✓</b><span>Clean text lands in the box. Or it's copied for you to paste, if you prefer.</span></li></ol>
-</section>
-
-<section id="compare">
-  <h2>How it compares</h2>
-  <p class="sub">Already using something? Here's the honest side-by-side.</p>
-  <div class="vs">
-    <a class="card" href="compare/gboard-voice-typing.html"><h3>KisuKisu vs Gboard voice typing</h3><p>Gboard types what you say, ums included. KisuKisu types what you meant, and keeps your keyboard.</p><span class="go">See the comparison →</span></a>
-    <a class="card" href="compare/wispr-flow-alternative-android.html"><h3>A Wispr Flow alternative for Android</h3><p>Same floating-bubble idea. KisuKisu runs on your phone, offline, with no account.</p><span class="go">See the comparison →</span></a>
+<!-- 2. HOW IT WORKS: pinned on desktop, stacked on phones -->
+<section class="how" id="how" aria-labelledby="how-h">
+  <div class="how-pin" data-scrub="how">
+    <div class="how-stage">
+      <div class="how-left">
+        <h2 id="how-h">From messy to clean.<br><span class="grey">In four steps.</span></h2>
+        <ol class="steps">
+          <li data-step="0">
+            <div class="vis" aria-hidden="true"></div>
+            <div class="step-txt"><span class="num">1</span><div><b>Tap the bubble.</b><p>Tap any text box. The KisuKisu bubble sits by your keyboard. Tap it and it opens: ✕ · waveform · ✓. Or hold it for a quick line.</p></div></div>
+          </li>
+          <li data-step="1">
+            <div class="vis" aria-hidden="true"></div>
+            <div class="step-txt"><span class="num">2</span><div><b>Talk messy.</b><p>Ums, restarts, “I mean”. Say it however it comes out. The speech model runs on your phone.</p></div></div>
+          </li>
+          <li data-step="2">
+            <div class="vis" aria-hidden="true"></div>
+            <div class="step-txt"><span class="num">3</span><div><b>Tidying up.</b><p>Tap ✓. Fillers come out, the correction wins, spoken numbers become digits, punctuation goes in.</p></div></div>
+          </li>
+          <li data-step="3">
+            <div class="vis" aria-hidden="true"></div>
+            <div class="step-txt"><span class="num">4</span><div><b>Lands in any app.</b><p>Clean text goes straight into the box. Or it's copied for you to paste, if you prefer.</p></div></div>
+          </li>
+        </ol>
+      </div>
+      <div class="how-right" aria-hidden="true"><div class="glow"></div><div class="vis" data-vis="desk"></div></div>
+    </div>
   </div>
 </section>
 
-<section id="phone">
-  <div class="answer"><b>Will it run on my phone?</b> If it runs Android 7.0 or newer on a 64-bit chip, yes. KisuKisu checks your memory and free space first and picks models that fit. <a href="will-it-run-on-my-phone.html">Requirements and model sizes →</a></div>
+<!-- 3. ONE BUBBLE, EVERY APP -->
+<section class="apps" id="apps" aria-labelledby="apps-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 id="apps-h">One bubble,<br><span class="grey">every app.</span></h2>
+      <p class="sub">It isn't a keyboard. It's a small bubble next to the one you already use, so it works wherever you can type: chat, email, notes, your browser.</p>
+    </div>
+    <div class="apps-row" data-apps>
+      <figure class="app-phone" style="--i:0"><div class="phone" data-phone="chat" style="--ps:.6"></div><figcaption>Chat</figcaption></figure>
+      <figure class="app-phone" style="--i:1"><div class="phone" data-phone="email" style="--ps:.6"></div><figcaption>Email</figcaption></figure>
+      <figure class="app-phone" style="--i:2"><div class="phone" data-phone="notes" style="--ps:.6"></div><figcaption>Notes</figcaption></figure>
+    </div>
+    <p class="note center reveal">Same words in each. With Accessibility on, it types straight into the box. Without it, the text is copied and you paste it.</p>
+  </div>
 </section>
 
-<section id="faq">
-  <h2>Questions</h2>
-  <div class="faq">
+<!-- 4. OFFLINE -->
+<section class="offline" id="offline" aria-labelledby="off-h">
+  <div class="wrap off-grid" data-scrub="offline">
+    <div class="off-copy">
+      <h2 id="off-h">Zero bars.<br><span class="grey">Still typing.</span></h2>
+      <p class="sub">Speech recognition and cleanup both run on your phone. After a one-time model download, it works in airplane mode with no signal. Your voice stays on your phone. Nothing is uploaded.</p>
+      <div class="qs-card" aria-hidden="true">
+        <div class="qs-row"><span class="qs-ic plane"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg></span><span class="qs-l"><b>Airplane mode</b><small class="swap"><span class="a">Off</span><span class="b">On</span></small></span><span class="toggle"><i></i></span></div>
+        <div class="qs-row dim"><span class="qs-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20l-3.5-4.3a5.5 5.5 0 0 1 7 0zM12 3C7.6 3 3.6 4.6.5 7.3l2.6 3.2A11.5 11.5 0 0 1 12 7.1c3.4 0 6.5 1.3 8.9 3.4l2.6-3.2A17.4 17.4 0 0 0 12 3z"/></svg></span><span class="qs-l"><b>Wi-Fi</b><small class="swap"><span class="a">Home Wi-Fi</span><span class="b">Off</span></small></span></div>
+        <div class="qs-row dim"><span class="qs-ic"><span class="bars big"><i></i><i></i><i></i><i></i></span></span><span class="qs-l"><b>Mobile data</b><small class="swap"><span class="a">4 bars</span><span class="b">No signal</span></small></span></div>
+      </div>
+    </div>
+    <div class="off-phone">
+      <div class="glow" aria-hidden="true"></div>
+      <div class="phone" data-phone="offline" style="--ps:.62" aria-hidden="true"></div>
+      <p class="toast" role="note"><span class="tick">✓</span> Typed on the phone, offline. Shown typed, not sent: sending still needs signal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. ACCENTS -->
+<section class="accent-sec" id="accent" aria-labelledby="acc-h">
+  <div class="wrap acc-grid">
+    <div class="reveal">
+      <h2 id="acc-h">Make it<br><span class="grey">yours.</span></h2>
+      <p class="sub">Five accent colours for highlights and the floating bubble. Pick one here and this page changes with it. In the app: Settings → Accent.</p>
+      <div class="swatches" role="group" aria-label="Accent colour">
+        <button type="button" class="sw" data-accent="steel" aria-pressed="true"><i></i><span>Steel blue</span></button>
+        <button type="button" class="sw" data-accent="copper" aria-pressed="false"><i></i><span>Copper</span></button>
+        <button type="button" class="sw" data-accent="sage" aria-pressed="false"><i></i><span>Sage</span></button>
+        <button type="button" class="sw" data-accent="violet" aria-pressed="false"><i></i><span>Violet</span></button>
+        <button type="button" class="sw" data-accent="rose" aria-pressed="false"><i></i><span>Rose</span></button>
+      </div>
+    </div>
+    <div class="acc-preview reveal" aria-hidden="true">
+      <div class="glow"></div>
+      <div class="acc-tile">
+        <div class="acc-rowlbl">Resting</div><div class="bub-slot" data-bub="rest"></div>
+        <div class="acc-rowlbl">Listening</div><div class="bub-slot" data-bub="tap"></div>
+        <div class="acc-rowlbl">Tidying up</div><div class="bub-slot" data-bub="busy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. TRY THE CLEANUP -->
+<section class="try" id="try" aria-labelledby="try-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 id="try-h">Try the cleanup.<br><span class="grey">Type like you talk.</span></h2>
+      <p class="sub">This is the same rule-based cleanup the app runs first, running here in your browser. The app can also polish with an on-device AI model.</p>
+    </div>
+    <div class="try-card reveal">
+      <label for="try-in" class="tag">You say</label>
+      <textarea id="try-in" rows="3" spellcheck="false">um, I'm running fifteen minutes late. uh, can we push the call to two, I mean three pm?</textarea>
+      <div class="try-bar">
+        <div class="ex" role="group" aria-label="Examples">
+          <button type="button" data-ex="um, I land at six, I mean seven pm. uh, can you pick me up?">Airport</button>
+          <button type="button" data-ex="send it to mark, I mean john">Wrong name</button>
+          <button type="button" data-ex="uh, can you book a table for twelve, I mean fourteen people? um, thanks!">Booking</button>
+          <button type="button" data-ex="shopping list one eggs two flour three sugar">List</button>
+        </div>
+        <button type="button" class="cta" id="try-go">Clean it up</button>
+      </div>
+      <div class="try-out" aria-live="polite">
+        <div><span class="tag">What it heard</span><p class="diff" id="try-diff"></p></div>
+        <div><span class="tag acc">What it types</span><p class="result" id="try-res"></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. FAQ + final CTA -->
+<section id="faq" aria-labelledby="faq-h">
+  <div class="wrap narrow">
+    <h2 id="faq-h" class="reveal">Questions</h2>
+  <div class="faq reveal">
 <details><summary>Is KisuKisu free?</summary><div><p>Yes. KisuKisu is free. No account, no ads, no subscription.</p></div></details>
-<details><summary>Does KisuKisu work offline?</summary><div><p>Yes. Speech recognition and cleanup both run on your phone. After a one-time model download, it works in airplane mode with no signal. <a href="offline-voice-typing.html">More on offline</a>.</p></div></details>
-<details><summary>Does my voice leave my phone?</summary><div><p>No. Your voice is turned into text on your phone and nothing is uploaded. The only exception is if you choose to connect a cloud AI provider in Settings with your own API key. That is off unless you turn it on. <a href="private-voice-typing.html">More on privacy</a>.</p></div></details>
-<details><summary>Which apps does it work in?</summary><div><p>Any app with a text box: WhatsApp, Gmail, Slack, Notes, your browser. With Accessibility turned on, KisuKisu types the words straight into the box. Without it, they are copied and you paste them. <a href="voice-typing-any-app.html">More on apps</a>.</p></div></details>
+<details><summary>Does KisuKisu work offline?</summary><div><p>Yes. Speech recognition and cleanup both run on your phone. After a one-time model download, it works in airplane mode with no signal. <a href="/offline-voice-typing.html">More on offline</a>.</p></div></details>
+<details><summary>Does my voice leave my phone?</summary><div><p>No. Your voice is turned into text on your phone and nothing is uploaded. The only exception is if you choose to connect a cloud AI provider in Settings with your own API key. That is off unless you turn it on. <a href="/private-voice-typing.html">More on privacy</a>.</p></div></details>
+<details><summary>Which apps does it work in?</summary><div><p>Any app with a text box: WhatsApp, Gmail, Slack, Notes, your browser. With Accessibility turned on, KisuKisu types the words straight into the box. Without it, they are copied and you paste them. <a href="/voice-typing-any-app.html">More on apps</a>.</p></div></details>
 <details><summary>Do I have to switch keyboards?</summary><div><p>No. KisuKisu is not a keyboard. It is a small bubble that floats next to the keyboard you already use.</p></div></details>
-<details><summary>Which phones does it run on?</summary><div><p>Android 7.0 or newer on a 64-bit (ARM64) phone. It checks your phone's memory and free space and picks models that fit, from about 316 MB on a 3 GB phone to about 1 GB on a 6 GB phone. <a href="will-it-run-on-my-phone.html">Full requirements</a>.</p></div></details>
+<details><summary>Which phones does it run on?</summary><div><p>Android 7.0 or newer on a 64-bit (ARM64) phone. It checks your phone's memory and free space and picks models that fit, from about 316 MB on a 3 GB phone to about 1 GB on a 6 GB phone. <a href="/will-it-run-on-my-phone.html">Full requirements</a>.</p></div></details>
 <details><summary>Which languages does it understand?</summary><div><p>English. Other languages are not supported yet.</p></div></details>
 <details><summary>Is there an iPhone or Mac version?</summary><div><p>Android only for now. A Mac version is coming soon. There is no iPhone version.</p></div></details>
 <details><summary>How do I get KisuKisu?</summary><div><p>KisuKisu is in closed testing on Google Play. <a href="https://forms.gle/dwdAoq4V1xZWSHcG6">Fill in the short form</a> with the Google account you use in the Play Store. We add you, usually within a day, and you install it from Google Play.</p></div></details>
 </div>
+  </div>
 </section>
 
-<section id="beta" class="beta">
-  <h2>Talk messy. <em>Send it clean.</em></h2>
-  <p>KisuKisu is in closed testing on Google Play. It's free. Android only for now.</p>
-  <ol>
-    <li>Fill in a short form with the Google account you use in the Play Store.</li>
-    <li>We add you as a tester, usually within a day.</li>
-    <li>Install KisuKisu from Google Play like any other app.</li>
-  </ol>
-  <a class="cta" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the Android beta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+<section class="final" id="beta" aria-labelledby="final-h" data-scrub="final">
+  <div class="wrap">
+    <h2 id="final-h" class="fill"><span class="w">Your</span> <span class="w">voice.</span><br><span class="w">Typed</span> <span class="w acc">clean.</span></h2>
+    <p class="sub center">KisuKisu is in closed testing on Google Play. It's free. Android only for now.</p>
+    <ol class="join">
+      <li><span>1</span>Fill in a short form with the Google account you use in the Play Store.</li>
+      <li><span>2</span>We add you as a tester, usually within a day.</li>
+      <li><span>3</span>Install KisuKisu from Google Play like any other app.</li>
+    </ol>
+    <p class="center"><a class="cta big" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the Android beta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+  </div>
 </section>
 
 </main>
 <footer>
-  <div class="cols"><a href="./">Home</a><a href="offline-voice-typing.html">Offline voice typing</a><a href="private-voice-typing.html">Private voice typing</a><a href="voice-typing-any-app.html">Voice typing in any app</a><a href="will-it-run-on-my-phone.html">Will it run on my phone?</a><a href="compare/gboard-voice-typing.html">KisuKisu vs Gboard voice typing</a><a href="compare/wispr-flow-alternative-android.html">Wispr Flow alternative for Android</a><a href="privacy.html">Privacy</a></div>
-  <div class="cols fine"><span>© 2026 KisuKisu</span><span>Made by Akhil Srinivas</span><a href="mailto:kisukisuapp@gmail.com">kisukisuapp@gmail.com</a><a href="https://instagram.com/kisukisuapp">Instagram</a><a href="llms.txt">llms.txt</a></div>
+  <div class="wrap">
+  <div class="cols"><a href="./">Home</a><a href="/offline-voice-typing.html">Offline voice typing</a><a href="/private-voice-typing.html">Private voice typing</a><a href="/voice-typing-any-app.html">Voice typing in any app</a><a href="/will-it-run-on-my-phone.html">Will it run on my phone?</a><a href="/compare/gboard-voice-typing.html">KisuKisu vs Gboard voice typing</a><a href="/compare/wispr-flow-alternative-android.html">Wispr Flow alternative for Android</a><a href="/privacy.html">Privacy</a></div>
+  <div class="cols fine"><span>© 2026 KisuKisu</span><span>Made by Akhil Srinivas</span><a href="mailto:kisukisuapp@gmail.com">kisukisuapp@gmail.com</a><a href="https://instagram.com/kisukisuapp">Instagram</a><a href="/llms.txt">llms.txt</a></div>
+  </div>
 </footer>
-</div>
+<script src="assets/textproc.js" defer></script>
+<script src="assets/home.js" defer></script>
 </body>
 </html>
