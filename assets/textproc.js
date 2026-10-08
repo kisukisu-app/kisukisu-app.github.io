@@ -290,6 +290,16 @@
   const i32 = v => BigInt.asIntN(32, v);
   const nstrip = s => s === null || s === undefined ? null : strip(s.toLowerCase(), ',.!?;:"\'()');
 
+  // Trailing sentence punctuation on a number word ("five." -> ["five", "."]), as Kotlin splitPunct.
+  function splitPunct(word) {
+    const m = word.match(/^(.*?)([.,!?;:]+)$/s);
+    if (!m || !m[1]) return [word.toLowerCase(), ''];
+    return [m[1].toLowerCase(), m[2]];
+  }
+  const MERIDIEM = new Set(['am', 'pm', 'a.m.', 'p.m.', 'a.m', 'p.m']);
+  const A_MULT = new Set(['hundred', 'thousand']);
+  const DEC_SCALES = new Set(['thousand', 'million', 'billion', 'trillion']);
+
   function numberNormalize(text) {
     if (!text) return text;
     const words = ws(text);
@@ -297,20 +307,61 @@
     const out = [];
     let i = 0;
     while (i < words.length) {
-      const [consumed, rep] = tryConsumeNumber(words, i);
-      if (consumed > 0 && shouldDigitize(words, i, consumed, rep)) { out.push(rep); i += consumed; }
+      const time = tryConsumeClockTime(words, i);
+      if (time) {
+        const [c, rep] = time;
+        if (rep !== null) out.push(rep); else out.push(...words.slice(i, i + c));
+        i += c;
+        continue;
+      }
+      const [consumed, rep, punct] = tryConsumeNumber(words, i);
+      if (consumed > 0 && shouldDigitize(words, i, consumed, rep, punct !== '')) { out.push(rep + punct); i += consumed; }
       else if (consumed > 0) { out.push(...words.slice(i, i + consumed)); i += consumed; }
       else { out.push(words[i]); i++; }
     }
     return out.join(' ');
   }
-  function shouldDigitize(words, start, consumed, rep) {
+  function tryConsumeClockTime(words, start) {
+    const [hw, hp] = splitPunct(words[start]);
+    if (hp) return null;
+    const hour = ONES.get(hw);
+    if (hour === undefined || hour < 1 || hour > 12) return null;
+    if (start > 0) {
+      const [pw, pp] = splitPunct(words[start - 1]);
+      if (!pp && (TENS.has(pw) || MULT.has(pw))) return null;
+    }
+    let i = start + 1;
+    if (i >= words.length) return null;
+    const [m1, p1] = splitPunct(words[i]);
+    let minutes, lastPunct = p1;
+    const t = TENS.get(m1);
+    if (t !== undefined && t <= 50) {
+      minutes = t; i++;
+      if (!p1 && i < words.length) {
+        const [nw, np] = splitPunct(words[i]);
+        const o = ONES.get(nw);
+        if (o !== undefined && o >= 1 && o <= 9) { minutes += o; lastPunct = np; i++; }
+      }
+    } else {
+      const o = ONES.get(m1);
+      if (o === undefined || o < 10 || o > 19) return null;
+      minutes = o; i++;
+    }
+    const after = i < words.length ? splitPunct(words[i]) : null;
+    if (!lastPunct && after && MERIDIEM.has(after[0])) return [i - start, `${hour}:${String(minutes).padStart(2, '0')}`];
+    return [i - start, null];
+  }
+  function shouldDigitize(words, start, consumed, rep, endsSentence) {
     if (rep.includes('.')) return true;
     if (consumed >= 2) return true;
     const prev = start - 1 >= 0 ? nstrip(words[start - 1]) : null;
-    const nxt = start + consumed < words.length ? nstrip(words[start + consumed]) : null;
+    const nxt = !endsSentence && start + consumed < words.length ? nstrip(words[start + consumed]) : null;
     const word = nstrip(words[start]) || '';
     if (word === 'one' && (PRONOUN_ONE_DET.has(prev) || nxt === 'of')) return false;
+    if (/[a-z]$/i.test(rep)) {
+      const ov = Number(rep.match(/^\d*/)[0] || 0);
+      return NUMERIC_CONTEXT.has(nxt) || ov >= 10;
+    }
     if (NUMERIC_CONTEXT.has(prev) || NUMERIC_CONTEXT.has(nxt)) return true;
     if (prev === '$' || prev === '#' || nxt === '%') return true;
     const m = rep.match(/^\d*/)[0];
@@ -322,65 +373,76 @@
   function tryConsumeNumber(words, start) {
     let i = start, total = 0n, current = 0n, consumed = 0;
     let isOrd = false, ordSuffix = '', hasDec = false, decDigits = [], hasNum = false, lastBareOnes = false;
+    let punct = '', scaleSuffix = '';
     const n = words.length;
     while (i < n) {
-      const w = words[i].toLowerCase();
-      if (w === 'and' && hasNum) { i++; consumed++; continue; }
+      const [w, wp] = splitPunct(words[i]);
+      const take = () => { punct = wp; return wp !== ''; };
+      if (w === 'and' && hasNum && !wp) { i++; consumed++; continue; }
       if (w === 'a' && !hasNum) {
-        if (i + 1 < n && MULT.has(words[i + 1].toLowerCase())) { current = 1n; hasNum = true; i++; consumed++; continue; }
+        if (!wp && i + 1 < n && A_MULT.has(splitPunct(words[i + 1])[0])) { current = 1n; hasNum = true; i++; consumed++; continue; }
         break;
       }
-      if (w === 'point' && hasNum && !hasDec) {
+      if (w === 'point' && hasNum && !hasDec && !wp) {
         hasDec = true; i++; consumed++;
         while (i < n) {
-          const v = ONES.get(words[i].toLowerCase());
-          if (v !== undefined && v <= 9) { decDigits.push(v); i++; consumed++; } else break;
+          const [dw, dp] = splitPunct(words[i]);
+          const v = ONES.get(dw);
+          if (v !== undefined && v <= 9) { decDigits.push(v); i++; consumed++; punct = dp; if (dp) break; } else break;
         }
         if (!decDigits.length) { hasDec = false; consumed--; i--; }
+        else if (!punct && i < n) {
+          const [sw, sp] = splitPunct(words[i]);
+          if (DEC_SCALES.has(sw)) { scaleSuffix = ' ' + sw; punct = sp; i++; consumed++; }
+        }
         break;
       }
       if (ORD_MULT.has(w)) {
         const [val, suf] = ORD_MULT.get(w);
         if (current === 0n) current = 1n;
         total = i32(total + current * BigInt(val)); current = 0n;
-        isOrd = true; ordSuffix = suf; hasNum = true; consumed++; i++;
+        isOrd = true; ordSuffix = suf; hasNum = true; consumed++; i++; take();
         break;
       }
       if (ORD_TENS.has(w)) {
         if (lastBareOnes) break;
         const [val, suf] = ORD_TENS.get(w);
-        current += BigInt(val); isOrd = true; ordSuffix = suf; hasNum = true; consumed++; i++;
+        current += BigInt(val); isOrd = true; ordSuffix = suf; hasNum = true; consumed++; i++; take();
         break;
       }
       if (ORD_ONES.has(w)) {
         const [val, suf] = ORD_ONES.get(w);
-        current += BigInt(val); isOrd = true; ordSuffix = suf; hasNum = true; consumed++; i++;
+        current += BigInt(val); isOrd = true; ordSuffix = suf; hasNum = true; consumed++; i++; take();
         break;
       }
       if (MULT.has(w)) {
+        if (!hasNum) break;
         const mult = BigInt(MULT.get(w));
         if (current === 0n) current = 1n;
         if (mult >= 1000n) { total = i32((total + current) * mult); current = 0n; }
         else current = i32(current * mult);
-        hasNum = true; lastBareOnes = false; consumed++; i++; continue;
+        hasNum = true; lastBareOnes = false; consumed++; i++;
+        if (take()) break; else continue;
       }
       if (TENS.has(w)) {
         if (lastBareOnes) break;
-        current += BigInt(TENS.get(w)); hasNum = true; lastBareOnes = false; consumed++; i++; continue;
+        current += BigInt(TENS.get(w)); hasNum = true; lastBareOnes = false; consumed++; i++;
+        if (take()) break; else continue;
       }
       if (ONES.has(w)) {
         if (lastBareOnes) break;
-        current += BigInt(ONES.get(w)); hasNum = true; lastBareOnes = true; consumed++; i++; continue;
+        current += BigInt(ONES.get(w)); hasNum = true; lastBareOnes = true; consumed++; i++;
+        if (take()) break; else continue;
       }
       break;
     }
-    if (!hasNum) return [0, ''];
+    if (!hasNum) return [0, '', ''];
     while (consumed > 0 && words[start + consumed - 1].toLowerCase() === 'and') consumed--;
-    if (consumed <= 0) return [0, ''];
+    if (consumed <= 0) return [0, '', ''];
     total = i32(total + current);
-    if (hasDec) return [consumed, `${total}.` + decDigits.join('')];
-    if (isOrd) return [consumed, `${total}${ordSuffix}`];
-    return [consumed, `${total}`];
+    if (hasDec) return [consumed, `${total}.` + decDigits.join('') + scaleSuffix, punct];
+    if (isOrd) return [consumed, `${total}${ordSuffix}`, punct];
+    return [consumed, `${total}`, punct];
   }
 
   // ------------------------------------------------------------- ListFormatter
