@@ -594,14 +594,14 @@
     });
   } else if (!RM) scrub($('.fill'), 'view', p => { const x = seg(p, .15, .85) * fillWords.length; fillWords.forEach((w, i) => w.style.setProperty('--o', clamp(x - i).toFixed(3))); });
 
-  // the logo in the header waves on hover (it sits on the left, so the right leaf waves)
+  // the logo in the header waves on hover (the left leaf, so it never covers the wordmark)
   const logo = $('.lock svg');
   if (logo && !RM) {
     const wrap = document.createElement('span'); wrap.className = 'lock-dot';
     wrap.innerHTML = KD.svg({ vb: '-150 -150 300 300', grad: 'kk-logo-g' });
     logo.replaceWith(wrap);
     const LD = KD.refs(wrap);
-    const hi = () => { if (!LD.anim) KD.moment(LD, 'wave', 1); };
+    const hi = () => { if (!LD.anim) KD.moment(LD, 'wave', -1); };
     $('.lock').addEventListener('mouseenter', hi); $('.lock').addEventListener('focus', hi);
   }
 
