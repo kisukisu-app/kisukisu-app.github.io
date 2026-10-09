@@ -72,7 +72,11 @@
     const v = { '--bg': T.bg, '--dots': T.dots, '--ink': T.ink, '--ink2': T.ink2, '--accent': T.accent, '--card': T.card, '--line': T.line,
       '--shadow': T.shadow, '--pop': T.pop, '--acc': a.dark, '--acc-rgb': rgbOf(a.dark), '--lite-rgb': B.lite,
       '--chk-g': B.chk, '--wash': B.wash, '--piece': B.piece, '--lg0': B.logo[0], '--lg1': B.logo[1], '--lg2': B.logo[2],
-      '--sys-out': sys.out, '--sys-round': sys.round, '--sys-ent': sys.ent };
+      '--sys-out': sys.out, '--sys-round': sys.round, '--sys-ent': sys.ent,
+      // Dot: the dot's gradient, the deeper accent of the ✓ slot while it tidies up (BubbleColors.busySlot), a leaf's outline once it is out
+      '--bub0': key === 'steel' ? '#6798C1' : mixC(a.dark, '#FFFFFF', .18), '--bub1': key === 'steel' ? '#4078A6' : mixC(a.dark, '#000000', .08),
+      '--deep-g': `linear-gradient(135deg,${mixC(a.dark, '#000000', .16)},${mixC(a.dark, '#000000', .3)})`,
+      '--leaf-out': mixC(a.dark, '#000000', .2), '--spark': mixC(a.soft, '#FFFFFF', .45) };
     for (const k in v) doc.style.setProperty(k, v[k]);
     const tc = $('meta[name="theme-color"]'); if (tc) tc.content = T.bg;
     $$('.swatches .sw').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.accent === key)));
@@ -106,7 +110,7 @@
   const hiDigits = s => esc(s).replace(/\d+/g, '<span class="dgt">$&</span>');
 
   // ===================================================================== phone + bubble markup
-  const MARK = '<svg viewBox="0 0 100 100"><use href="#kk-mark"/></svg>';
+  const KD = window.KKDot, { n2, bump } = KD.util;
   const ic = {
     back: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8EAED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>',
     video: '<svg width="24" height="24" viewBox="0 0 24 24" fill="#E8EAED"><path d="M4 6h11a2 2 0 0 1 2 2v1.5l4-2.5v10l-4-2.5V16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></svg>',
@@ -125,24 +129,60 @@
   const cv = document.createElement('canvas').getContext('2d');
   const tw = s => { cv.font = '700 12.5px Nunito'; return cv.measureText(s).width; };
   function bubbleHTML(top) {
-    let bars = '';
+    let bars = '', soft = '';
     for (let i = 0; i < 11; i++) {
       const sh = Math.sin(Math.PI * (i + .5) / 11);
       bars += `<i style="--h:${(3.2 + 20 * sh).toFixed(1)}px;--du:${(.32 + ((i * 37) % 11) * .025).toFixed(3)}s;--de:-${((i * 53) % 17 * .04).toFixed(2)}s"></i>`;
     }
-    const r = S * .31, c = S / 2;
+    for (let i = 0; i < 9; i++) soft += `<i style="--i:${i}"></i>`;
     return `<div class="kkb" data-s="rest" style="top:${top}px">
       <div class="pc x"><svg width="${S * .4}" height="${S * .4}" viewBox="0 0 24 24" fill="none" stroke="#1E1C22" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
-      <div class="pc pill"><i class="bga"></i><i class="bgb"></i><div class="wv">${bars}</div><span class="st"></span></div>
+      <div class="pc pill"><i class="bga"></i><i class="bgb"></i><div class="wv">${bars}</div><div class="wv soft">${soft}</div><span class="st"></span></div>
       <div class="pc ok"><i class="bga"></i><i class="bgb"></i>
         <span class="ico i-chk"><svg width="${S * .42}" height="${S * .42}" viewBox="0 0 24 24" fill="none" stroke="#E8EEF4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
-        <span class="ico i-spin"><svg width="${S}" height="${S}" viewBox="0 0 ${S} ${S}"><path fill="none" stroke="#1E1C22" stroke-width="2.4" stroke-linecap="round" d="M ${c + r} ${c} A ${r} ${r} 0 0 1 ${c} ${c + r}"/></svg></span>
-        <span class="ico i-done"><svg width="${S * .42}" height="${S * .42}" viewBox="0 0 24 24" fill="none" stroke="#1E1C22" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
-      <div class="pc dot">${MARK}</div></div>`;
+        <span class="ico i-mark">${KD.svg({ bg: false, vb: '-150 -150 300 300' })}</span></div>
+      <div class="pc dot">${KD.svg()}</div></div>`;
   }
-  // state: rest | press | tap | busy (with status word) | done
-  function setBubble(el, s, word) {
+  // the bubble's parts: the resting dot (Dot) and the mark in the ✓ slot (white, on the deeper accent while it tidies up)
+  const bubIO = new IntersectionObserver(es => es.forEach(e => { const B = e.target._bub; if (!B) return; B.vis = e.isIntersecting; (B.vis ? KD.resume : KD.pause)(B.slot); }));
+  function bub(el) {
+    if (el._bub) return el._bub;
+    const B = el._bub = { el, dotPc: el.querySelector('.dot'), dot: KD.refs(el.querySelector('.dot')), slot: KD.refs(el.querySelector('.i-mark')), vis: true, done: null };
+    bubIO.observe(el);
+    return B;
+  }
+  const ds = (el, s) => { if (el.dataset.s !== s) el.dataset.s = s; };
+  const busyLoop = B => { if (B.slot.anim && B.slot.anim.kind === 'busy') return; KD.play(B.slot, t => KD.pose(B.slot, KD.busyPose(t)), Infinity, 'busy'); if (!B.vis) KD.pause(B.slot); };
+  // ✓: the bar in the slot folds into a ✓, the bar collapses, Dot comes back and unfolds the ✓ with a hop.
+  // o.flo: a flourish instead of the hop (long takes); o.bud: the copy chip buds off instead (copied, not typed in)
+  const DONE_T = { hop: 1.85, flo: 2.35, bud: 4.1 };
+  function doneAt(B, lt, o = {}) {
+    const el = B.el;
+    B.dirty = true;
+    if (lt < .7) {
+      ds(el, 'done'); B.dotPc.style.opacity = '';
+      KD.pose(B.slot, { check: KD.util.seg(lt, 0, .3), body: { s: 1 + .12 * bump(lt, .05, .35) } });
+      KD.pose(B.dot, { check: 1 });
+      return;
+    }
+    const seg = KD.util.seg, end = o.bud ? DONE_T.bud : o.flo ? DONE_T.flo : DONE_T.hop, fadeAt = end - .45;
+    ds(el, lt < end ? 'hop' : 'rest');
+    const ck = 1 - seg(lt, .7, .92);
+    let p;
+    if (o.bud && lt >= .8) p = KD.budPose(lt - .8, -1, 2.3);
+    else if (o.flo && lt >= .95) { const m = KD.MOMENTS[o.flo]; p = m.pose(Math.min(m.D, lt - .95), -1); }
+    else {
+      const h = seg(lt, .8, 1.1), hop = !o.flo && !o.bud && h > 0 && h < 1 ? -Math.sin(Math.PI * h) * 26 : 0, sq = o.flo || o.bud ? 0 : bump(lt, 1.1, 1.28);
+      p = { body: { anchor: 'b', ty: hop, sx: 1 + .1 * sq, sy: 1 - .1 * sq } };
+    }
+    if (ck > 0) p = Object.assign({}, p, { check: ck });
+    KD.pose(B.dot, p);
+    B.dotPc.style.opacity = lt < end ? n2(lerp(.85, .45, seg(lt, fadeAt, end))) : '';
+  }
+  // state: rest | press | tap | busy (with status word) | done. lt (seconds into the state) draws a still frame for scrubbing.
+  function setBubble(el, s, word, lt, o) {
     if (!el) return;
+    const B = bub(el);
     if (s === 'busy' || s === 'done') {
       const w = word || el._word || 'Almost there';
       el._word = w;
@@ -150,8 +190,32 @@
       if (st.textContent !== w) st.textContent = w;
       el.style.setProperty('--pw', Math.max(PILL, tw(w) + 30 * K * 2.6).toFixed(1) + 'px');
     } else el.style.setProperty('--pw', PILL.toFixed(1) + 'px');
-    if (el.dataset.s !== s) el.dataset.s = s;
+    if (RM && s === 'done' && lt == null) lt = .5;
+    if (s === 'done') {
+      KD.stop(B.slot);
+      if (lt != null) { KD.stop(B.dot); doneAt(B, lt, o); return Promise.resolve(true); }
+      if (B.done) return B.done;
+      const dur = (o && o.bud ? DONE_T.bud : o && o.flo ? DONE_T.flo : DONE_T.hop) + .05;
+      B.done = KD.play(B.dot, t => doneAt(B, t, o), dur, 'done').then(ok => { B.done = null; if (ok) { KD.pose(B.dot, {}); B.dotPc.style.opacity = ''; ds(el, 'rest'); } return ok; });
+      return B.done;
+    }
+    if (B.done || B.dirty || (B.dot.anim && s !== 'rest')) { KD.stop(B.dot); KD.pose(B.dot, {}); KD.pose(B.slot, {}); B.dotPc.style.opacity = ''; B.dirty = false; }
+    if (s === 'busy') { if (RM || lt != null) { KD.stop(B.slot); KD.pose(B.slot, KD.busyPose(lt ?? .6)); } else busyLoop(B); }
+    else if (B.slot.anim) { KD.stop(B.slot); KD.pose(B.slot, {}); }
+    ds(el, s);
+    return Promise.resolve(true);
   }
+  // a Dot moment on the resting bubble (it brightens while it plays, as in the app)
+  async function dotMoment(el, name) {
+    if (RM || !el || el.dataset.s !== 'rest') return false;
+    const B = bub(el);
+    if (B.dot.anim) return false;
+    B.dotPc.style.opacity = '.85';
+    const ok = await KD.moment(B.dot, name, -1);
+    B.dotPc.style.opacity = '';
+    return ok;
+  }
+  const nextNudge = KD.picker(KD.NUDGES), nextFlourish = KD.picker(KD.FLOURISH);
   const KBTOP = 932 - 322, BUBY = 440;
   function statusBar() {
     return `<div class="sbar"><span>9:41</span><span class="ic">${ic.plane}${ic.wifi}<span class="bars"><i></i><i></i><i></i><i></i></span>${ic.battery}</span></div>`;
@@ -177,18 +241,19 @@
       <div class="efield" style="top:210px"><span style="width:auto;color:#E8EAED">Today's call</span></div>
       <div class="ebody" style="top:278px"><span class="typed"></span><span class="ph" style="color:#9AA0A6">Compose email</span></div>${keyboard()}`,
     notes: () => `${statusBar()}<div class="appbar">${ic.back}<div style="flex:1" class="t1">Notes</div>${ic.pen}<span style="width:12px"></span>${ic.more}</div>
-      <div class="notes-t"><h4>Monday</h4><div class="d">Today · 9:41</div><div class="bd"><p>Pick up dry cleaning</p><p><span class="typed"></span><span class="ph" style="color:#6c737b">Note</span></p></div></div>${keyboard()}`,
+      <div class="notes-t"><h4>Monday</h4><div class="d">Today · 9:41</div><div class="bd"><p>Pick up dry cleaning</p><p class="pline"><span class="pastetip">Paste</span><span class="typed"></span><span class="ph" style="color:#6c737b">Note</span></p></div></div>${keyboard()}`,
   };
   function buildPhone(el, kind, o) {
     el.innerHTML = `<div class="device"><div class="screen"><div class="cam"></div>${SCREENS[kind](o)}${bubbleHTML(BUBY)}<div class="finger" style="left:${430 - 10.75 - S / 2 - 28}px;top:${BUBY + S / 2 - 28}px"></div></div></div>`;
-    return { root: el, bub: $('.kkb', el), typed: $('.typed', el), round: $('.round', el), finger: $('.finger', el), bars: $$('.sbar .bars i', el) };
+    return { root: el, bub: $('.kkb', el), typed: $('.typed', el), round: $('.round', el), finger: $('.finger', el), bars: $$('.sbar .bars i', el), tip: $('.pastetip', el) };
   }
   function setTyped(P, s) {
     if (P.typed.textContent !== s) P.typed.textContent = s;
     if (P.round) P.round.innerHTML = s ? ic.send : ic.mic;
   }
   // a dictation, start to finish, in real time (used where it isn't scrubbed)
-  async function dictate(P, text, alive = () => true) {
+  // o.copy: copied instead of typed in (the C2 copy chip buds off, then the text is pasted)
+  async function dictate(P, text, alive = () => true, o = {}) {
     const steps = [
       () => { setBubble(P.bub, 'rest'); setTyped(P, ''); }, 600,
       () => { P.finger.classList.add('on'); setBubble(P.bub, 'press'); }, 220,
@@ -198,12 +263,22 @@
       () => { P.finger.classList.remove('on'); setBubble(P.bub, 'busy', 'Listening back'); }, 650,
       () => setBubble(P.bub, 'busy', 'Tidying up'), 650,
       () => setBubble(P.bub, 'busy', 'Almost there'), 500,
-      () => setBubble(P.bub, 'done'), 250,
     ];
     for (let i = 0; i < steps.length; i += 2) { if (!alive()) return false; steps[i](); await sleep(steps[i + 1]); }
-    const t0 = performance.now(), dur = 900;
-    await new Promise(res => { const f = now => { if (!alive()) return res(); const x = clamp((now - t0) / dur); setTyped(P, text.slice(0, Math.round(text.length * x))); x < 1 ? requestAnimationFrame(f) : res(); }; requestAnimationFrame(f); });
-    await sleep(350);
+    if (!alive()) return false;
+    const done = setBubble(P.bub, 'done', null, null, o.copy ? { bud: true } : o.flo ? { flo: o.flo } : undefined);
+    if (o.copy) {
+      await sleep(1900); if (!alive()) return false;
+      P.tip?.classList.add('on');
+      await sleep(800); if (!alive()) return false;
+      setTyped(P, text); P.tip?.classList.remove('on');
+    } else {
+      await sleep(720); if (!alive()) return false;
+      const t0 = performance.now(), dur = 900;
+      await new Promise(res => { const f = now => { if (!alive()) return res(); const x = clamp((now - t0) / dur); setTyped(P, text.slice(0, Math.round(text.length * x))); x < 1 ? requestAnimationFrame(f) : res(); }; requestAnimationFrame(f); });
+    }
+    await done;
+    if (!alive()) { P.tip?.classList.remove('on'); return false; }
     setBubble(P.bub, 'rest');
     return true;
   }
@@ -271,11 +346,20 @@
     heroLoopOn = p < .26;
   }
   // the phone runs a real dictation on a loop while it is the thing on screen
-  let heroLoopOn = true, heroRunning = false;
+  let heroLoopOn = true, heroRunning = false, heroWaved = false;
   async function heroLoop() {
     if (heroRunning) return; heroRunning = true;
     await sleep(900);
-    while (heroLoopOn && !document.hidden) { await dictate(heroP, CLEAN, () => heroLoopOn); await sleep(2600); }
+    // first thing: Dot says hello with the side-aware wave (it sits on the right edge, so the left leaf waves)
+    if (!heroWaved && heroLoopOn) { heroWaved = true; await dotMoment(heroP.bub, 'wave'); await sleep(500); }
+    let n = 0;
+    while (heroLoopOn && !document.hidden) {
+      await dictate(heroP, CLEAN, () => heroLoopOn);
+      await sleep(1100);
+      // every other pause, an idle nudge from the pool (the keyboard is up and nobody is talking)
+      if (n++ % 2 === 0 && heroLoopOn && !document.hidden) { await dotMoment(heroP.bub, nextNudge()); await sleep(700); }
+      else await sleep(1500);
+    }
     heroRunning = false;
   }
   if (RM) {
@@ -333,8 +417,9 @@
       if (t > .76) V.lbl.textContent = 'It types';
     }
     if (k === 3) {
-      setBubble(V.bub, t < .14 ? 'busy' : t < .5 ? 'done' : 'rest', 'Almost there');
-      const x = seg(t, .14, .5);
+      if (t < .1) setBubble(V.bub, 'busy', 'Almost there');
+      else setBubble(V.bub, 'done', 'Almost there', (t - .1) * 2.4);
+      const x = seg(t, .38, .62);
       setTyped(P, CLEAN.slice(0, Math.round(CLEAN.length * x)));
     }
   }
@@ -374,7 +459,7 @@
     watch(appsRow, () => {
       appsRow.classList.add('in');
       const id = ++appsGo;
-      appPh.forEach(async (P, i) => { setTyped(P, ''); await sleep(500 + i * 900); if (id === appsGo) await dictate(P, CLEAN, () => id === appsGo); });
+      appPh.forEach(async (P, i) => { setTyped(P, ''); await sleep(500 + i * 900); if (id === appsGo) await dictate(P, CLEAN, () => id === appsGo, i === 2 ? { copy: true } : undefined); });
     }, () => { appsGo++; }, .35);
   }
 
@@ -400,12 +485,82 @@
   if (RM) { offFrame(.59); setTyped(offP, OFF_CLEAN); toast.classList.add('on'); }
   else scrub($('[data-scrub="offline"]'), 'view', offFrame);
 
-  // ===================================================================== 5. accent preview bubbles
-  $$('.bub-slot').forEach(slot => {
+  // ===================================================================== 5. accent preview bubbles (they live while on screen)
+  const PLAYFUL = { hear: ['Listening back', 'Hearing you', 'Hmm, let me see', 'Decoding you'], tidy: ['Tidying up', 'Fixing commas', 'Polishing', 'Almost there'] };
+  const slots = {};
+  $$('.acc-tile .bub-slot').forEach(slot => {
     slot.innerHTML = bubbleHTML(0);
     const b = $('.kkb', slot), s = slot.dataset.bub;
-    setBubble(b, s, 'Tidying up');
+    slots[s] = b;
+    setBubble(b, s === 'done' ? 'rest' : s, s === 'busy' ? 'Tidying up' : null);
   });
+  if (RM) setBubble(slots.done, 'done', 'Almost there');
+  else {
+    let accRun = 0;
+    watch($('.acc-tile'), () => {
+      const id = ++accRun, alive = () => id === accRun;
+      (async () => {   // resting: an idle nudge now and then
+        await sleep(900);
+        while (alive()) { await dotMoment(slots.rest, nextNudge()); await sleep(2200); }
+      })();
+      (async () => {   // tidying up: the status words change every 1.3 s while the bar wiggles
+        const words = [...PLAYFUL.hear, ...PLAYFUL.tidy]; let i = 1;
+        while (alive()) { await sleep(1300); if (alive()) setBubble(slots.busy, 'busy', words[i++ % words.length]); }
+      })();
+      (async () => {   // done: ✓ fold and hop, again and again
+        await sleep(600);
+        while (alive()) {
+          setBubble(slots.done, 'busy', 'Almost there'); await sleep(1300); if (!alive()) break;
+          await setBubble(slots.done, 'done', 'Almost there'); await sleep(900);
+        }
+      })();
+    }, () => { accRun++; setBubble(slots.done, 'rest'); }, .3);
+  }
+
+  // ===================================================================== 5b. pick its personality (status words)
+  const STYLES = {
+    playful: PLAYFUL,
+    plain: { hear: ['Transcribing'], tidy: ['Polishing'] },
+    mean: { hear: ['Ugh. Fine. Listening', 'Mumbling again?', 'Deciphering you', 'Was that a word?', 'Wow. Okay.', 'Speak up, honestly'],
+      tidy: ['Fixing your mess', 'So many ums', 'Deleting the ums', 'Cleaning up after you', 'Rescuing your grammar', "You're welcome"] },
+    sarcastic: { hear: ['Oh, riveting', 'Hanging on every word', 'Groundbreaking stuff', 'Ah yes, poetry', 'Taking notes. Sure.', 'Never heard that before'],
+      tidy: ['Adding commas. Again.', 'Making you sound smart', 'A miracle, loading', 'Polishing a classic', 'Bestseller pending', 'Nailed it. Mostly.'] },
+    unhinged: { hear: ['Absorbing your aura', 'Consulting the void', 'Chewing your words', 'Hearing in 4K', 'Asking the pigeons', 'Tasting the vowels'],
+      tidy: ['Feeding commas to moths', 'Summoning grammar', 'Arguing with a comma', 'Ironing the syllables', 'Bribing the semicolons', 'Ritual almost done'] },
+    own: { hear: ['Your words here', 'One per line'], tidy: ['Up to 24 letters', 'Whatever you like'] },
+    off: { hear: [''], tidy: [''] },
+  };
+  const AUTO = ['playful', 'mean', 'sarcastic', 'unhinged'];
+  const perSlot = $('[data-bub="persona"]'), perBtns = $$('.styles button'), perStage = $('.per-stage-lbl');
+  if (perSlot) {
+    perSlot.innerHTML = bubbleHTML(0);
+    const pb = $('.kkb', perSlot);
+    let style = 'playful', auto = !RM, perRun = 0, onScreen = false;
+    const mark = k => perBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.style === k)));
+    const show = (k, stage, w) => { pb.classList.toggle('off', k === 'off'); setBubble(pb, 'busy', w || ' '); if (perStage) perStage.textContent = stage === 'hear' ? 'While it hears you' : 'While it tidies up'; };
+    // one pass through a style: its hearing words, then its tidying words (auto mode shows two of each)
+    async function pass(k, alive) {
+      const L = STYLES[k], few = auto ? 2 : 99;
+      for (const stage of ['hear', 'tidy']) {
+        const arr = L[stage].slice(0, few), d = arr.length > 1 ? 1300 : 2600;
+        for (const w of arr) { if (!alive()) return; show(k, stage, w); await sleep(d); }
+      }
+    }
+    function start() {
+      const id = ++perRun, alive = () => id === perRun && onScreen;
+      (async () => { while (alive()) { if (auto) { style = AUTO[(AUTO.indexOf(style) + 1) % AUTO.length]; mark(style); } await pass(style, alive); } })();
+    }
+    mark(style); show(style, 'hear', STYLES.playful.hear[0]);
+    perBtns.forEach(b => b.addEventListener('click', () => {
+      auto = false; style = b.dataset.style; mark(style);
+      if (RM) show(style, 'tidy', STYLES[style].tidy[0]);
+      else if (onScreen) start();
+    }));
+    if (!RM) {
+      style = AUTO[AUTO.length - 1];   // so the first pass is Playful
+      watch(perSlot, () => { onScreen = true; start(); }, () => { onScreen = false; perRun++; }, .3);
+    }
+  }
 
   // ===================================================================== 6. try the cleanup
   const tin = $('#try-in'), tdiff = $('#try-diff'), tres = $('#try-res');
@@ -424,7 +579,31 @@
   // ===================================================================== 7. final line fills in word by word
   const fillWords = $$('.fill .w');
   fillWords.forEach(w => w.dataset.t = w.textContent);
-  if (!RM) scrub($('.fill'), 'view', p => { const x = seg(p, .15, .85) * fillWords.length; fillWords.forEach((w, i) => w.style.setProperty('--o', clamp(x - i).toFixed(3))); });
+  // Dot under the last line: a flourish (the ones it plays after a long take) once the line has filled in, and on every tap
+  const fdot = $('.final-dot');
+  if (fdot) {
+    fdot.innerHTML = KD.svg({ vb: '-200 -200 400 400' });
+    const FD = KD.refs(fdot);
+    let cheered = false;
+    const cheer = () => { if (!RM && !FD.anim) KD.moment(FD, nextFlourish()); };
+    fdot.addEventListener('click', cheer);
+    if (!RM) scrub($('.fill'), 'view', p => {
+      const x = seg(p, .15, .85) * fillWords.length; fillWords.forEach((w, i) => w.style.setProperty('--o', clamp(x - i).toFixed(3)));
+      if (p > .9 && !cheered) { cheered = true; setTimeout(cheer, 150); }
+      if (p < .4) cheered = false;
+    });
+  } else if (!RM) scrub($('.fill'), 'view', p => { const x = seg(p, .15, .85) * fillWords.length; fillWords.forEach((w, i) => w.style.setProperty('--o', clamp(x - i).toFixed(3))); });
+
+  // the logo in the header waves on hover (it sits on the left, so the right leaf waves)
+  const logo = $('.lock svg');
+  if (logo && !RM) {
+    const wrap = document.createElement('span'); wrap.className = 'lock-dot';
+    wrap.innerHTML = KD.svg({ vb: '-150 -150 300 300', grad: 'kk-logo-g' });
+    logo.replaceWith(wrap);
+    const LD = KD.refs(wrap);
+    const hi = () => { if (!LD.anim) KD.moment(LD, 'wave', 1); };
+    $('.lock').addEventListener('mouseenter', hi); $('.lock').addEventListener('focus', hi);
+  }
 
   kick();
 })();

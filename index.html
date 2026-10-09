@@ -153,6 +153,8 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="kk-logo-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="lg0"/><stop offset=".55" class="lg1"/><stop offset="1" class="lg2"/></linearGradient>
+    <linearGradient id="kk-bub-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="bb0"/><stop offset="1" class="bb1"/></linearGradient>
+    <linearGradient id="kk-bub-u" gradientUnits="userSpaceOnUse" x1="-150" y1="-150" x2="150" y2="150"><stop offset="0" class="bb0"/><stop offset="1" class="bb1"/></linearGradient>
     <symbol id="kk-mark" viewBox="0 0 100 100"><path d="M26.7,28.5 A25.43,25.43 0 0,0 26.7,71.5 A25.43,25.43 0 0,0 26.7,28.5 Z M45.25,22.05 A4.75,4.75 0 0,1 54.75,22.05 L54.75,77.95 A4.75,4.75 0 0,1 45.25,77.95 Z M73.3,28.5 A25.43,25.43 0 0,0 73.3,71.5 A25.43,25.43 0 0,0 73.3,28.5 Z"/></symbol>
   </defs>
 </svg>
@@ -235,7 +237,7 @@
     <div class="apps-row" data-apps>
       <figure class="app-phone" style="--i:0"><div class="phone" data-phone="chat" style="--ps:.6"></div><figcaption>Chat</figcaption></figure>
       <figure class="app-phone" style="--i:1"><div class="phone" data-phone="email" style="--ps:.6"></div><figcaption>Email</figcaption></figure>
-      <figure class="app-phone" style="--i:2"><div class="phone" data-phone="notes" style="--ps:.6"></div><figcaption>Notes</figcaption></figure>
+      <figure class="app-phone" style="--i:2"><div class="phone" data-phone="notes" style="--ps:.6"></div><figcaption>Notes <span class="fc-sub">copied, you paste</span></figcaption></figure>
     </div>
     <p class="note center reveal">Same words in each. With Accessibility on, it types straight into the box. Without it, the text is copied and you paste it.</p>
   </div>
@@ -281,6 +283,33 @@
         <div class="acc-rowlbl">Resting</div><div class="bub-slot" data-bub="rest"></div>
         <div class="acc-rowlbl">Listening</div><div class="bub-slot" data-bub="tap"></div>
         <div class="acc-rowlbl">Tidying up</div><div class="bub-slot" data-bub="busy"></div>
+        <div class="acc-rowlbl">Done</div><div class="bub-slot" data-bub="done"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5b. PERSONALITY: the status words -->
+<section class="persona" id="personality" aria-labelledby="per-h">
+  <div class="wrap per-grid">
+    <div class="reveal">
+      <h2 id="per-h">Pick its<br><span class="grey">personality.</span></h2>
+      <p class="sub">While it works, the bubble shows a few words. Keep them playful or plain, let it be a little mean, sarcastic or completely unhinged, write your own, or switch them off. In the app: Settings → Status words.</p>
+      <div class="styles" role="group" aria-label="Status words style">
+        <button type="button" data-style="playful" aria-pressed="true">Playful</button>
+        <button type="button" data-style="plain" aria-pressed="false">Plain</button>
+        <button type="button" data-style="mean" aria-pressed="false">Mean</button>
+        <button type="button" data-style="sarcastic" aria-pressed="false">Sarcastic</button>
+        <button type="button" data-style="unhinged" aria-pressed="false">Unhinged</button>
+        <button type="button" data-style="own" aria-pressed="false">Your own</button>
+        <button type="button" data-style="off" aria-pressed="false">Off</button>
+      </div>
+    </div>
+    <div class="per-stage reveal" aria-hidden="true">
+      <div class="glow"></div>
+      <div class="per-tile">
+        <div class="bub-slot per" data-bub="persona"></div>
+        <p class="per-stage-lbl">While it hears you</p>
       </div>
     </div>
   </div>
@@ -333,6 +362,7 @@
 
 <section class="final" id="beta" aria-labelledby="final-h" data-scrub="final">
   <div class="wrap">
+    <button type="button" class="final-dot" aria-label="Dot, the KisuKisu bubble: tap for a little celebration"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="url(#kk-bub-g)"/><use href="#kk-mark" transform="translate(7 7) scale(0.86)" fill="#fff"/></svg></button>
     <h2 id="final-h" class="fill"><span class="w">Your</span> <span class="w">voice.</span><br><span class="w">Typed</span> <span class="w acc">clean.</span></h2>
     <p class="sub center">KisuKisu is in closed testing on Google Play. It's free. Android only for now.</p>
     <ol class="join">
@@ -352,6 +382,7 @@
   </div>
 </footer>
 <script src="assets/textproc.js" defer></script>
+<script src="assets/dot.js" defer></script>
 <script src="assets/home.js" defer></script>
 </body>
 </html>
