@@ -139,7 +139,7 @@ em { font-style: normal; color: var(--accent); background: var(--pop); border-ra
 .kkb .pc > svg, .kkb .pc > .wv, .kkb .pc > .st, .kkb .pc > .ico { position: relative; }
 /* Dot: drawn in a window 1.6x the dot (as in the app), so a waving leaf or the copy chip can leave the circle */
 .kkdot { display: block; overflow: visible; }
-.kkdot .lf { stroke: var(--leaf-out); paint-order: stroke; }
+.kkdot .lf { stroke: none; }   /* pure white leaves, no outline */
 .kkb .dot { opacity: .45; overflow: visible; }
 .kkb .dot .kkdot { position: absolute; left: -30%; top: -30%; width: 160%; height: 160%; }
 .kkb .i-mark .kkdot { width: 100%; height: 100%; }
