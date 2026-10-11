@@ -350,18 +350,20 @@
     const B = bub(el);
     if (RM) { B.gone = false; KD.pose(B.dot, {}); return Promise.resolve(true); }
     toRest(B); B.gone = false;
-    const E = KD.ENTS[id || KD.nextEntrance()];
+    B.ent = id || KD.nextEntrance();
+    const E = KD.ENTS[B.ent];
     return KD.play(B.dot, t => {
       KD.pose(B.dot, E.pose(Math.min(t, E.D), -1));
       B.dotPc.style.opacity = t < E.D + .15 ? '.85' : kl(.85, .45, sstep(ks(t, E.D + .15, E.D + .55))).toFixed(3);
     }, E.D + .56, 'enter').then(ok => { KD.pose(B.dot, {}); B.dotPc.style.opacity = ''; return ok; });
   }
-  // the keyboard closes: X4 Droplet reabsorb (it runs back to its edge and is drunk back in)
+  // the keyboard closes: Dot leaves with the exit paired to its entrance (E5 → X4 droplet, E1 → squish and shrink,
+  // E3 → back behind its edge, E2 → lifts off upward; E14 and anything else → X4)
   function dotLeave(el) {
     const B = bub(el);
     toRest(B); B.gone = true;
     if (RM) { KD.pose(B.dot, { body: { a: 0 } }); return Promise.resolve(true); }
-    return KD.leave(B.dot, -1);
+    return KD.leave(B.dot, -1, B.ent);
   }
   function dotHide(el) { const B = bub(el); toRest(B); B.gone = true; KD.pose(B.dot, { body: { a: 0 } }); }
   const nextNudge = KD.picker(KD.NUDGES), nextFlourish = KD.picker(KD.FLOURISH);
@@ -518,7 +520,7 @@
     }
     heroRunning = false;
   }
-  // the hero keyboard slides away and back; Dot leaves with the droplet exit and comes back with a pool entrance
+  // the hero keyboard slides away and back; Dot leaves with its paired exit and comes back with a pool entrance
   async function heroKeyboard(open) {
     if (open) { heroScreen.classList.remove('kbd'); await sleep(260); await dotEnter(heroP.bub); }
     else { setTyped(heroP, ''); heroScreen.classList.add('kbd'); await sleep(60); await dotLeave(heroP.bub); }

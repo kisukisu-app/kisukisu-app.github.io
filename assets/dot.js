@@ -242,6 +242,12 @@
   const dropSnap = () => { if (DROP_SNAP != null) return DROP_SNAP; for (let t = .02; t < .5; t += .002) { const g = dropletGeom(t, -1); if (!neckD(g.sx0 - g.x, g.rs, 0, g.r, 70)) return (DROP_SNAP = t); } return (DROP_SNAP = .2); };
   const ENTS = {
     E1: { fam: 'spring', w: 2, D: .38, pose: t => ({ body: { s: .4 + .6 * stepS(t, 500, .46), a: clamp(t / .07) }, mark: { s: .55 + .45 * stepS(t - .045, 560, .5) } }) },
+    E2: { fam: 'spring', D: .38, pose: (tt, d) => {
+      const t = tt * .42 / .38, tf = .16, u = seg(t, 0, tf); let sx = 1, sy = 1, lag = 0;
+      if (t < tf) { sy = 1 + .1 * u; sx = 1 - .05 * u; }
+      else { const tau = t - tf, c = .3 * Math.exp(-12 * tau) * Math.sin(26 * tau); sy = 1 - c; sx = 1 + .75 * c; const tl = Math.max(0, tau - .04); lag = .3 * Math.exp(-12 * tl) * Math.sin(26 * tl); }
+      return { body: { ty: t < tf ? -78 * (1 - u * u) : 0, anchor: 'b', sx, sy, s: lerp(.9, 1, u), a: clamp(t / .07) }, l: { y: 20 * lag }, r: { y: 20 * lag }, bar: { len: 1 - .25 * lag, y: 10 * lag } };
+    } },
     E3: { fam: 'spring', D: .4, pose: (t, d) => {
       const x0 = -d * 370, x = spring(t, x0, 0, 0, .66, 460), v = springV(t, x0, 0, 0, .66, 460), xl = spring(t - .05, x0, 0, 0, .66, 460);
       return { body: { tx: x, stretch: { ang: 0, amt: clamp(Math.abs(v) / 2600) * .13 } }, mark: { tx: clamp((xl - x) * .22, -26, 26) } };
@@ -252,39 +258,17 @@
       return { body: { tx: g.x, r: g.r, fill: 'u', sx: 1 + wob, sy: 1 - .8 * wob }, bead: { cx: g.sx0 - g.x, r: g.rs, neck: neckD(g.sx0 - g.x, g.rs, 0, g.r, 70) },
         mark: { s: ms * g.r / 150 }, bar: { a: seg(t, sn - .01, sn + .05) }, l: { a: seg(t, sn + .03, sn + .09) }, r: { a: seg(t, sn + .03, sn + .09) } };
     } },
-    E6: { fam: 'liquid', D: .38, pose: (t, d) => {
-      const ox = -d * 55, oy = 35, u = seg(t, .02, .3), R = 230 * eOut(u) + 6, ls = lerp(.7, 1, stepS(t - .2, 520, .62));
-      return { body: { clip: { cx: ox, cy: oy, r: R } }, wet: u > 0 && u < 1 ? { cx: ox, cy: oy, r: Math.max(1, R - 6), a: .55 * (1 - u) } : null,
-        bar: { len: eOut(seg(t, .13, .27)) }, l: { a: seg(t, .19, .27), s: ls }, r: { a: seg(t, .19, .27), s: ls } };
-    } },
-    E11: { fam: 'build', w: 2, D: .36, pose: t => {
-      const rx = 12.25 + 137.75 * stepS(t - .03, 520, .55), ry = lerp(96, 150, stepS(t - .03, 520, .85)), k = clamp(stepS(t - .08, 520, .7));
-      const lf = side => ({ abs: true, x: side * LX * k, sx: lerp(.4, 1, k), a: seg(k, .25, .6) });
-      return { body: { rx, ry, a: clamp(t / .05) }, bar: { len: lerp(.72, 1, sstep(seg(t, .05, .24))) }, l: lf(-1), r: lf(1) };
-    } },
-    E12: { fam: 'build', D: .43, pose: t => {
-      const tf = t < .14 ? FOLD_CLOSED : Math.min(FOLD_SECONDS, FOLD_OPEN_FROM + (t - .14) * 1.9), f = foldShapes(tf);
-      return Object.assign(f ? { fold: f } : {}, { body: { s: (.5 + .5 * stepS(t, 600, .7)) * (1 + .045 * hann(tf, .52, .84)), a: clamp(t / .06) } });
-    } },
-    E13: { fam: 'voice', D: .44, pose: t => {
-      const c = sstep(seg(t, .14, .3)), ls = lerp(.6, 1, stepS(t - .26, 520, .6)), la = seg(t, .26, .34);
-      const bar = c >= 1 ? {} : { bars: [-48, -24, 0, 24, 48].map((x, i) => { const lev = .5 + .5 * Math.sin(2 * Math.PI * 3.2 * t + i * 1.9); return [x * (1 - c), lerp(BH * (.22 + .5 * lev), BH, c), lerp(.55, i === 2 ? 1 : .55, c)]; }) };
-      return { body: { s: .55 + .45 * stepS(t, 420, .7), a: clamp(t / .06) }, bar, l: { s: ls, a: la }, r: { s: ls, a: la } };
-    } },
     // special: the first appearance (first open of the day)
     E14: { fam: 'voice', D: .9, special: true, pose: t => {
       const s = t < .5 ? lerp(.82, 1.06, sstep(seg(t, 0, .5))) : spring(t - .5, 1.06, 1, 0, .9, 160), o = hann(t, .1, .8), g = hann(t, .02, .9);
       return { glow: g > .01 ? { r: 150 * s * 1.42, a: g * .9 } : null, body: { s, a: seg(t, 0, .16) }, l: { x: -7 * o, sy: 1 + .06 * o }, r: { x: 7 * o, sy: 1 + .06 * o }, bar: { len: 1 + .08 * o } };
     } },
   };
-  // the everyday pool: weighted, never the same option or the same family twice in a row
-  const POOL = ['E1', 'E3', 'E5', 'E6', 'E11', 'E12', 'E13'];
+  // the everyday pool (locked by the owner): E5, E1, E3, E2 at equal odds, never the same entrance twice in a row
+  const POOL = ['E5', 'E1', 'E3', 'E2'];
   let lastEnt = null;
   function nextEntrance() {
-    let c = POOL.filter(id => id !== lastEnt);
-    const c2 = c.filter(id => !lastEnt || ENTS[id].fam !== ENTS[lastEnt].fam); if (c2.length) c = c2;
-    const tot = c.reduce((a, id) => a + (ENTS[id].w || 1), 0); let r = Math.random() * tot, pick = c[c.length - 1];
-    for (const id of c) { r -= ENTS[id].w || 1; if (r <= 0) { pick = id; break; } }
+    const c = POOL.filter(id => id !== lastEnt), pick = c[Math.floor(Math.random() * c.length)];
     lastEnt = pick;
     return pick;
   }
@@ -295,6 +279,22 @@
     const v = Math.abs(ACCEL(seg(t + .01, 0, .3)) - ACCEL(seg(t - .01, 0, .3))) * 50;
     return { body: { tx: x, r, fill: 'u', stretch: { ang: 0, amt: clamp(v) * .1 } }, bead: { cx: sx0 - x, r: rs, neck: neckD(sx0 - x, rs, 0, r, 70) }, mark: { s: r / 150, a: 1 - seg(t, .1, .2) } };
   } };
+
+  // each entrance leaves the way it came (the lab's "In and out"): accelerating out, alpha only in the last stretch
+  const fadeTail = (t, D, f = .45) => 1 - seg(t, D * (1 - f), D);
+  const EXITS = {
+    E5: X4,
+    // a quick squish, then it shrinks to nothing; the pieces go 30 ms ahead of the body
+    E1: { D: .2, pose: t => { const sq = hann(t, 0, .07), k = ACCEL(seg(t, .05, .2)); return { body: { sx: (1 + .05 * sq) * (1 - k) + .001, sy: (1 - .05 * sq) * (1 - k) + .001, a: fadeTail(t, .2, .35) }, mark: { s: 1 - ACCEL(seg(t, .03, .17)) } }; } },
+    // it slides back behind the edge it came from, stretched by the speed
+    E3: { D: .22, pose: (t, d) => {
+      const k = ACCEL(seg(t, 0, .22)), x = -d * 420 * k, v = (ACCEL(seg(t + .01, 0, .22)) - ACCEL(seg(t - .01, 0, .22))) * 420 / .02;
+      return { body: { tx: x, stretch: { ang: 0, amt: clamp(Math.abs(v) / 2600) * .13 } }, mark: { tx: d * clamp(Math.abs(v) / 2600) * 22 } };
+    } },
+    // it came down from above, so it leaves upward: a small crouch, then it lifts, stretched, and fades
+    E2: { D: .2, pose: t => { const cr = hann(t, 0, .06), k = ACCEL(seg(t, .04, .2)); return { body: { ty: -76 * k, anchor: 'b', sx: 1 + .06 * cr - .05 * k, sy: 1 - .08 * cr + .1 * k, s: lerp(1, .85, k), a: fadeTail(t, .2) } }; } },
+  };
+  EXITS.E14 = X4;   // specials leave with X4
 
   // ---------- the take's pieces (the ✓ slot) ----------
   const busyPose = t => ({ bar: { amp: 12 * eOut(seg(t, 0, .25)), cyc: 1.5, ph: t * 10 } });
@@ -454,9 +454,10 @@
   function resume(D) { const a = D.anim; if (a && a.paused) { a.paused = false; a.t0 += performance.now() - a.pt; running.add(a); if (!rafOn) { rafOn = true; requestAnimationFrame(tick); } } }
   const moment = (D, name, d = -1) => { const m = MOMENTS[name]; return play(D, t => pose(D, m.pose(t, d)), m.D, name).then(ok => { if (ok) pose(D, {}); return ok; }); };
   const enter = (D, id, d = -1) => { const E = ENTS[id]; return play(D, t => pose(D, E.pose(Math.min(t, E.D), d)), E.D + .02, 'enter').then(ok => { pose(D, {}); return ok; }); };
-  const leave = (D, d = -1) => play(D, t => pose(D, X4.pose(Math.min(t, X4.D), d)), X4.D + .02, 'leave').then(ok => { pose(D, { body: { a: 0 } }); return ok; });
+  // Dot leaves with the exit paired to how it came in (id: the entrance; X4 for the specials)
+  const leave = (D, d = -1, id) => { const X = EXITS[id] || X4; return play(D, t => pose(D, X.pose(Math.min(t, X.D), d)), X.D + .02, 'leave').then(ok => { pose(D, { body: { a: 0 } }); return ok; }); };
 
-  window.KKDot = { svg, refs, pose, play, stop, pause, resume, moment, enter, leave, picker, nextEntrance, MOMENTS, NUDGES, FLOURISH, ENTS, X4,
+  window.KKDot = { svg, refs, pose, play, stop, pause, resume, moment, enter, leave, picker, nextEntrance, MOMENTS, NUDGES, FLOURISH, ENTS, EXITS, X4,
     busyPose, settleWig, restUnfold, holdThenRest, budHold, budRet, FAR, RB,
     util: { clamp, seg, lerp, bump, hann, sstep, eOut, eIn, eInOut, n2, spring, springV, stepS, cubicBezier, ACCEL, EMPH } };
 })();
