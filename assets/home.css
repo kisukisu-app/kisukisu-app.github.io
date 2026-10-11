@@ -135,45 +135,56 @@ em { font-style: normal; color: var(--accent); background: var(--pop); border-ra
 .kkb { --S: 45.79px; --G: 8.36px; --pw: 105.1px; position: absolute; right: 10.75px; width: 400px; height: var(--S); z-index: 10; pointer-events: none; }
 .kkb .pc { position: absolute; top: 0; right: 0; height: var(--S); width: var(--S); border-radius: 999px; display: flex; align-items: center; justify-content: center; overflow: hidden;
   transition: transform .45s cubic-bezier(.3,1.5,.5,1), opacity .3s; }
-.kkb .pc > .bga, .kkb .pc > .bgb { position: absolute; inset: 0; border-radius: inherit; transition: opacity .35s; }
+.kkb .pc > .bga, .kkb .pc > .bgb, .kkb .pc > .bgc { position: absolute; inset: 0; border-radius: inherit; transition: opacity .35s; }
 .kkb .pc > svg, .kkb .pc > .wv, .kkb .pc > .st, .kkb .pc > .ico { position: relative; }
 /* Dot: drawn in a window 1.6x the dot (as in the app), so a waving leaf or the copy chip can leave the circle */
 .kkdot { display: block; overflow: visible; }
-.kkdot .lf { stroke: none; }   /* pure white leaves, no outline */
+.kkdot .lf { stroke: none; }   /* pure white leaves, no outline (a leaf out past the dot's edge gets a soft grey drop shadow from dot.js) */
 .kkb .dot { opacity: .45; overflow: visible; }
 .kkb .dot .kkdot { position: absolute; left: -30%; top: -30%; width: 160%; height: 160%; }
 .kkb .i-mark .kkdot { width: 100%; height: 100%; }
 .kkb .ok .bga { background: var(--chk-g); } .kkb .ok .bgb { background: var(--deep-g); opacity: 0; }
-.kkb .pill { right: calc(var(--S) + var(--G)); width: var(--pw); transition: transform .45s cubic-bezier(.3,1.5,.5,1), opacity .3s, width .35s cubic-bezier(.3,1.2,.5,1); }
-.kkb .pill .bga { background: var(--piece); } .kkb .pill .bgb { background: var(--wash); opacity: 0; }
-.kkb .x { right: calc(var(--S) + var(--G) * 2 + var(--pw)); background: var(--piece); transition: transform .45s cubic-bezier(.3,1.5,.5,1) .06s, opacity .3s .06s, right .35s cubic-bezier(.3,1.2,.5,1); }
+/* the pill's width (--pw) is sprung per frame by home.js, so width / right have no CSS transition */
+.kkb .pill { right: calc(var(--S) + var(--G)); width: var(--pw); }
+.kkb .pill .bga { background: var(--piece); } .kkb .pill .bgb { background: var(--wash); opacity: 0; } .kkb .pill .bgc { background: var(--chk-g); opacity: 0; }
+.kkb .x { right: calc(var(--S) + var(--G) * 2 + var(--pw)); background: var(--piece); transition: transform .45s cubic-bezier(.3,1.5,.5,1) .06s, opacity .3s .06s; }
 .kkb .ok, .kkb .pill, .kkb .x { opacity: 0; transform: translateX(calc(var(--S) * .8)) scale(.4); }
 .kkb .ok { transform: scale(.4); }
 .kkb .wv { display: flex; align-items: center; justify-content: center; gap: 4px; height: 100%; transition: opacity .25s; }
-.kkb .wv i { display: block; width: 3.2px; border-radius: 2px; background: #1E1C22; height: var(--h); transform: scaleY(.3); transform-origin: 50% 50%; }
+.kkb .wv i { display: block; width: 3.2px; border-radius: 2px; background: #1E1C22; height: calc(var(--h) * var(--k, 1)); transform: scaleY(.3); transform-origin: 50% 50%; }
 /* status words off: no words, a soft hump travels along the bars */
 .kkb .wv.soft { position: absolute; inset: 0; opacity: 0; gap: 5px; }
 .kkb .wv.soft i { height: 13px; opacity: .5; transform: scaleY(.3); }
 .kkb.off[data-s="busy"] .wv.soft { opacity: 1; }
 .kkb.off[data-s="busy"] .wv.soft i { animation: hump 1.14s ease-in-out infinite; animation-delay: calc(var(--i) * -.136s); }
 @keyframes hump { 0%, 100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
-.kkb .st { position: absolute !important; inset: 0; display: grid; place-items: center; font: 700 12.5px var(--f-head); color: #1E1C22; white-space: nowrap; opacity: 0; transition: opacity .25s; }
+.kkb .st { position: absolute !important; inset: 0; display: grid; place-items: center; font: 700 12.5px var(--f-head); color: #1E1C22; white-space: nowrap; opacity: 0; transition: opacity .25s; z-index: 1; }
+/* S3 Slot machine: the old phrase rolls up and out, the new one rolls in from below (both clipped by the pill) */
+.kkb .st { justify-content: center; grid-template-columns: max-content; }
+.kkb .st b { grid-area: 1 / 1; justify-self: center; font: inherit; transform-origin: 50% 50%; will-change: transform; }
+/* G3: one soft light sweep across the pill at the hearing → tidying change */
+.kkb .shm { position: absolute; top: 0; bottom: 0; right: -13.7px; width: 27.5px; opacity: 0; pointer-events: none; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.65), rgba(255,255,255,0)); }
 .kkb .ico { position: absolute !important; inset: 0; display: grid; place-items: center; opacity: 0; transition: opacity .25s, transform .35s; }
 /* states */
 .kkb[data-s="rest"] .dot { opacity: .45; transform: none; }
 .kkb[data-s="press"] .dot { opacity: .6; transform: scale(.88); }
-.kkb[data-s="hop"] .dot { opacity: .85; transform: none; transition: opacity .2s, transform .3s cubic-bezier(.3,1.6,.5,1); }
-.kkb:not([data-s="rest"]):not([data-s="press"]):not([data-s="hop"]) .dot { opacity: 0; transform: scale(.4); }
-.kkb:not([data-s="rest"]):not([data-s="press"]):not([data-s="hop"]) .ok,
-.kkb:not([data-s="rest"]):not([data-s="press"]):not([data-s="hop"]) .pill,
-.kkb:not([data-s="rest"]):not([data-s="press"]):not([data-s="hop"]) .x { opacity: .85; transform: none; }
-.kkb[data-s="tap"] .ok .i-chk { opacity: 1; }
+.kkb:not([data-s="rest"]):not([data-s="press"]) .dot { opacity: 0; transform: scale(.4); }
+.kkb:not([data-s="rest"]):not([data-s="press"]) .ok,
+.kkb:not([data-s="rest"]):not([data-s="press"]) .pill,
+.kkb:not([data-s="rest"]):not([data-s="press"]) .x { opacity: .85; transform: none; }
+.kkb[data-s="tap"] .i-mark { opacity: 1; }
 .kkb[data-s="tap"] .wv i { animation: wave var(--du) ease-in-out var(--de) infinite alternate; }
 .kkb[data-s="busy"] .ok .bgb, .kkb[data-s="done"] .ok .bgb, .kkb[data-s="busy"] .pill .bgb, .kkb[data-s="done"] .pill .bgb { opacity: 1; }
 .kkb[data-s="busy"] .wv, .kkb[data-s="done"] .wv { opacity: 0; }
 .kkb[data-s="busy"] .st, .kkb[data-s="done"] .st { opacity: 1; }
 .kkb[data-s="busy"] .i-mark, .kkb[data-s="done"] .i-mark { opacity: 1; }
 @keyframes wave { from { transform: scaleY(.18); } to { transform: scaleY(1); } }
+/* while home.js drives a moment frame by frame (Unroll, Re-roll, the bud hand-off), CSS transitions stay out of the way */
+.kkb.drv .pc, .kkb.drv .pc > i, .kkb.drv .st, .kkb.drv .wv, .kkb.drv .ico { transition: none !important; }
+/* the hero keyboard closes and opens again (Dot leaves with it, then comes back) */
+.screen .kb, .screen .inputrow { transition: transform .3s cubic-bezier(.2,0,0,1); }
+.screen.kbd .kb { transform: translateY(100%); } .screen.kbd .inputrow { transform: translateY(300px); }
+.glw0 { stop-color: var(--spark); stop-opacity: .75; } .glw1 { stop-color: var(--bub0); stop-opacity: .28; } .glw2 { stop-color: var(--bub0); stop-opacity: 0; }
 /* copy mode: Android's Paste popup over the line */
 .pline { position: relative; }
 .pastetip { position: absolute; left: -4px; bottom: calc(100% + 6px); background: #3C4043; color: #E8EAED; font: 600 14px var(--f-body); padding: 7px 14px; border-radius: 8px;
@@ -366,7 +377,7 @@ p.rise, div.rise { display: block; } .cta-row.rise { display: flex; }
 .acc-rowlbl { color: #9AA0A6; font: 700 14px var(--f-head); padding-bottom: 16px; }
 .bub-slot { position: relative; height: calc(45.79px * 1.5 + 16px); }
 .bub-slot .kkb { transform: scale(1.5); transform-origin: 100% 0; right: 0; top: 0; }
-.bub-slot .kkb, .bub-slot .kkb .pc { transition-property: transform, opacity, width, right, background; }
+.bub-slot .kkb, .bub-slot .kkb .pc { transition-property: transform, opacity, background; }
 @media (max-width: 860px) { .acc-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) {
   .acc-tile { grid-template-columns: 1fr; padding: 20px 18px 8px; gap: 0; }

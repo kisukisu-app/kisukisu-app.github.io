@@ -125,9 +125,13 @@
     battery: '<svg width="24" height="14" viewBox="0 0 26 14"><rect x="0.5" y="0.5" width="22" height="13" rx="3.5" fill="none" stroke="#E8EAED"/><rect x="2.5" y="2.5" width="16" height="9" rx="2" fill="#E8EAED"/><rect x="23.5" y="4.5" width="2" height="5" rx="1" fill="#E8EAED"/></svg>',
     pen: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8EAED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
   };
-  const K = 430 / 1080, S = 115 * K, PILL = 264 * K;
+  // the bubble row, in px: [✕] [pill] [✓ slot / Dot], right-aligned. KU = px per mark unit (the dot is r150 = S/2).
+  const K = 430 / 1080, S = 115 * K, PILL = 264 * K, G = 8.36, KU = S / 300, NEARU = 150 + 8 * 150 / 22;
+  const { clamp: kc, seg: ks, lerp: kl, sstep, hann, eIn, eInOut, spring, springV, stepS, ACCEL, cubicBezier } = KD.util;
+  const H4E = cubicBezier(.3, 0, .2, 1);
   const cv = document.createElement('canvas').getContext('2d');
   const tw = s => { cv.font = '700 12.5px Nunito'; return cv.measureText(s).width; };
+  const needW = w => Math.max(PILL, tw(w || '') + 30 * K * 2.6);
   function bubbleHTML(top) {
     let bars = '', soft = '';
     for (let i = 0; i < 11; i++) {
@@ -137,84 +141,229 @@
     for (let i = 0; i < 9; i++) soft += `<i style="--i:${i}"></i>`;
     return `<div class="kkb" data-s="rest" style="top:${top}px">
       <div class="pc x"><svg width="${S * .4}" height="${S * .4}" viewBox="0 0 24 24" fill="none" stroke="#1E1C22" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
-      <div class="pc pill"><i class="bga"></i><i class="bgb"></i><div class="wv">${bars}</div><div class="wv soft">${soft}</div><span class="st"></span></div>
+      <div class="pc pill"><i class="bga"></i><i class="bgb"></i><i class="bgc"></i><div class="wv">${bars}</div><div class="wv soft">${soft}</div><span class="st"><b class="w0"></b><b class="w1"></b></span><i class="shm"></i></div>
       <div class="pc ok"><i class="bga"></i><i class="bgb"></i>
-        <span class="ico i-chk"><svg width="${S * .42}" height="${S * .42}" viewBox="0 0 24 24" fill="none" stroke="#E8EEF4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
         <span class="ico i-mark">${KD.svg({ bg: false, vb: '-150 -150 300 300' })}</span></div>
       <div class="pc dot">${KD.svg()}</div></div>`;
   }
-  // the bubble's parts: the resting dot (Dot) and the mark in the ✓ slot (white, on the deeper accent while it tidies up)
+  // the bubble's parts: the resting dot (Dot, also the ✓ once a take lands) and the mark in the ✓ slot
   const bubIO = new IntersectionObserver(es => es.forEach(e => { const B = e.target._bub; if (!B) return; B.vis = e.isIntersecting; (B.vis ? KD.resume : KD.pause)(B.slot); }));
   function bub(el) {
     if (el._bub) return el._bub;
-    const B = el._bub = { el, dotPc: el.querySelector('.dot'), dot: KD.refs(el.querySelector('.dot')), slot: KD.refs(el.querySelector('.i-mark')), vis: true, done: null };
+    const q = s => el.querySelector(s), pill = q('.pill'), ok = q('.ok');
+    const B = el._bub = { el, s: 'rest', dotPc: q('.dot'), okPc: ok, pillPc: pill, xPc: q('.x'), wv: q('.pill .wv'), bars: [...el.querySelectorAll('.pill .wv:not(.soft) i')],
+      st: q('.st'), w0: q('.w0'), w1: q('.w1'), shm: q('.shm'), pA: q('.pill .bga'), pB: q('.pill .bgb'), pC: q('.pill .bgc'), oB: q('.ok .bgb'),
+      dot: KD.refs(q('.dot')), slot: KD.refs(q('.i-mark')), txt: { anim: null }, vis: true, word: '', W: PILL, wordT: 0, pend: null, stage: 'hear', wigT: .6, inl: new Set(), gone: false };
     bubIO.observe(el);
     return B;
   }
   const ds = (el, s) => { if (el.dataset.s !== s) el.dataset.s = s; };
+  // inline style while a moment drives the pieces (CSS transitions are off under .drv); cleared on commit
+  const sty = (B, el, k, v) => { const c = el._s || (el._s = {}); if (c[k] === v) return; c[k] = v; B.inl.add(el); if (v == null) el.style.removeProperty(k); else el.style.setProperty(k, v); };
+  function clearInline(B) { for (const el of B.inl) { if (el._s) for (const k in el._s) el.style.removeProperty(k); el._s = {}; } B.inl.clear(); }
+  function commit(B, s) {   // hand back to the CSS state: drop the inline styles, then turn transitions back on
+    clearInline(B); ds(B.el, s); B.s = s;
+    void B.el.offsetWidth; B.el.classList.remove('drv');
+  }
+  const setW = (B, W) => { B.W = W; B.el.style.setProperty('--pw', W.toFixed(1) + 'px'); };
+  const radius = w => `${Math.min(S / 2, w / 2).toFixed(1)}px / ${(S / 2).toFixed(1)}px`;
   const busyLoop = B => { if (B.slot.anim && B.slot.anim.kind === 'busy') return; KD.play(B.slot, t => KD.pose(B.slot, KD.busyPose(t)), Infinity, 'busy'); if (!B.vis) KD.pause(B.slot); };
-  // ✓: the bar in the slot folds into a ✓, the bar collapses, Dot comes back and unfolds the ✓ with a hop.
-  // o.flo: a flourish instead of the hop (long takes); o.bud: the copy chip buds off instead (copied, not typed in)
-  const DONE_T = { hop: 1.85, flo: 2.35, bud: 4.1 };
-  function doneAt(B, lt, o = {}) {
-    const el = B.el;
-    B.dirty = true;
-    if (lt < .7) {
-      ds(el, 'done'); B.dotPc.style.opacity = '';
-      KD.pose(B.slot, { check: KD.util.seg(lt, 0, .3), body: { s: 1 + .12 * bump(lt, .05, .35) } });
-      KD.pose(B.dot, { check: 1 });
+  const loopT = B => { const a = B.slot.anim; return a && a.kind === 'busy' ? (a.paused ? a.pt - a.t0 : performance.now() - a.t0) / 1000 : .6; };
+
+  // ---- tap → listening: 4.1D Unroll. The bar folds into the ✓ while the pill unrolls from behind the dot like a
+  // ribbon; the waveform lights up from the dot outward, and the ✕ lands last on a spring.
+  const UNROLL_T = .9;
+  function unrollAt(B, tt) {
+    const ck = sstep(ks(tt, 0, .2)), u = 1 - Math.pow(1 - ks(tt, .02, .3), 3), len = (G + PILL) * u - G;
+    sty(B, B.dotPc, 'opacity', '.85'); sty(B, B.dotPc, 'transform', `scale(${kl(.88, 1, stepS(tt, 500, .6)).toFixed(3)})`);
+    KD.pose(B.dot, { bar: { check: ck } });
+    sty(B, B.okPc, 'opacity', '0');
+    sty(B, B.pillPc, 'width', Math.max(0, len).toFixed(1) + 'px'); sty(B, B.pillPc, 'opacity', len > 2 * KU ? '.85' : '0'); sty(B, B.pillPc, 'border-radius', radius(Math.max(0, len)));
+    sty(B, B.wv, 'position', 'absolute'); sty(B, B.wv, 'right', '0'); sty(B, B.wv, 'top', '0'); sty(B, B.wv, 'width', PILL.toFixed(1) + 'px');
+    B.bars.forEach((b, i) => { const j = 10 - i, a = sstep(ks(tt, .12 + j * .022, .22 + j * .022)); sty(B, b, 'opacity', a.toFixed(3)); sty(B, b, '--k', Math.max(.05, a).toFixed(3)); });
+    const xs = stepS(tt - .3, 520, .55);
+    sty(B, B.xPc, 'opacity', tt > .3 ? '.85' : '0'); sty(B, B.xPc, 'transform', `scale(${Math.max(.001, xs).toFixed(3)})`);
+  }
+  // ---- the status words: S3 Slot machine (a fast roll with a little motion stretch, landing with an overshoot).
+  // The pill width springs: it grows before a longer word comes in, and shrinks only after a long word has left.
+  // Hearing → tidying: G3 One shimmer (a single light sweep across the pill, from Dot outward).
+  const ROLL_H = 115 * KU;
+  function swapAt(B, old, neu, u, wF, wT, shimmer) {
+    const W = wT >= wF ? spring(u, wF, wT, 0, 1, 600) : u < .14 ? wF : spring(u - .14, wF, wT, 0, 1, 600);
+    setW(B, W);
+    const ui = u - (wT >= wF ? .07 : 0), oy = -ROLL_H * eIn(ks(u, 0, .14)), oa = u < .3 ? 1 - ks(u, .04, .14) : 0;
+    const ny = spring(ui - .06, ROLL_H, 0, 0, .5, 520), na = ks(ui, .06, .16), v = Math.abs(springV(Math.max(0, ui - .06), 115, 0, 0, .5, 520));
+    B.w0.style.transform = `translateY(${oy.toFixed(2)}px)`; B.w0.style.opacity = oa.toFixed(3);
+    B.w1.style.transform = `translateY(${ny.toFixed(2)}px) scaleY(${(1 + .22 * kc(v / 2200)).toFixed(3)})`; B.w1.style.opacity = na.toFixed(3);
+    if (shimmer) {
+      const su = ks(u, 0, .6), x = W * eInOut(su);
+      B.shm.style.opacity = su > 0 && su < 1 ? Math.sin(Math.PI * su).toFixed(3) : '0';
+      B.shm.style.transform = `translateX(${(-x).toFixed(1)}px) skewX(-18deg)`;
+    }
+  }
+  function wordStill(B, w) {   // no roll (reduced motion, or a reset)
+    KD.stop(B.txt); clearTimeout(B.pendT); B.pend = null;
+    B.word = w; B.w0.textContent = ''; B.w1.textContent = w; B.w0.style.opacity = '0'; B.w1.style.transform = ''; B.w1.style.opacity = ''; B.shm.style.opacity = '0';
+    setW(B, w ? needW(w) : PILL);
+  }
+  function startSwap(B, neu, stage) {
+    const old = B.word, wF = B.W, wT = needW(neu), shimmer = stage === 'tidy' && B.stage === 'hear';
+    if (stage) B.stage = stage;
+    B.word = neu; B.wordT = performance.now();
+    B.w0.textContent = old; B.w1.textContent = neu;
+    B.swap = { old, neu, wF, wT, shimmer };
+    return KD.play(B.txt, u => swapAt(B, old, neu, u, wF, wT, shimmer), 1, 'swap').then(ok => { if (ok) { B.w0.textContent = ''; B.shm.style.opacity = '0'; B.swap = null; } return ok; });
+  }
+  // a new phrase: each one holds at least 900 ms (swaps take ≤ 320 ms), so a quicker request waits its turn
+  function sayWord(B, w, stage) {
+    if (RM) { if (w !== B.word) wordStill(B, w); if (stage) B.stage = stage; return; }
+    if (B.pend ? B.pend.w === w : w === B.word) return;
+    const wait = B.word.trim() ? B.wordT + 1220 - performance.now() : 0;
+    clearTimeout(B.pendT); B.pend = null;
+    if (wait > 0) { B.pend = { w, stage }; B.pendT = setTimeout(() => { const p = B.pend; B.pend = null; if (p && B.s === 'busy') startSwap(B, p.w, p.stage); }, wait); return; }
+    startSwap(B, w, stage);
+  }
+  // done arriving mid-swap: past halfway it finishes, before that it rolls back in 120 ms
+  async function settleSwap(B) {
+    clearTimeout(B.pendT); B.pend = null;
+    const a = B.txt.anim; if (!a || !B.swap) return;
+    const u = (performance.now() - a.t0) / 1000, sw = B.swap;
+    if (u >= .32) return;
+    if (u >= .16) { await new Promise(r => setTimeout(r, (.32 - u) * 1000)); return; }
+    KD.stop(B.txt);
+    await KD.play(B.txt, x => swapAt(B, sw.old, sw.neu, u * (1 - x), sw.wF, sw.wT, false), .12, 'swap');
+    B.word = sw.old; B.w1.textContent = sw.old; B.w0.textContent = ''; B.w1.style.transform = ''; B.w1.style.opacity = ''; B.swap = null; setW(B, sw.wF);
+  }
+
+  // ---- done: T1 Re-roll. The ✕ lifts off first, the word blurs away (X4) as the pill rolls back behind Dot like a
+  // ribbon, the ✓ lands as the last turn closes, holds, then unfolds into Dot at rest.
+  // o.bud (the text was copied, not typed in): H4, the pill shrinks straight into the C2 copy bud instead.
+  const T1_T = 1.75, H4_BK = 2.7;
+  const doneT = o => o && o.bud ? (o.bk ?? H4_BK) + 1.0 : T1_T;
+  function textExit(B, tau, W0, rightPx) {   // X4 Blur away (the word stays put; the pill clips it as it rolls)
+    sty(B, B.st, 'left', 'auto'); sty(B, B.st, 'width', W0.toFixed(1) + 'px'); sty(B, B.st, 'right', (rightPx || 0).toFixed(1) + 'px');
+    B.w0.style.opacity = '0';
+    B.w1.style.transform = ''; B.w1.style.opacity = (1 - sstep(ks(tau, .04, .36))).toFixed(3);
+    B.w1.style.filter = `blur(${(1.04 * ks(tau, 0, .3)).toFixed(2)}px)`;
+  }
+  function doneAt(B, tau, o = {}) {
+    const W0 = B.W;
+    B.el.classList.add('drv'); ds(B.el, 'done');
+    if (o.bud) {
+      const u = H4E(ks(tau, .1, .5)), FAR = KD.FAR, RB = KD.RB, R0 = NEARU + W0 / KU;
+      const L = kl(NEARU, FAR - RB, u), R = kl(R0, FAR + RB, u), h = kl(300, 2 * RB, u), col = kc(ks(tau, .3, .55)), rightPx = S / 2 + L * KU;
+      sty(B, B.pillPc, 'right', rightPx.toFixed(1) + 'px'); sty(B, B.pillPc, 'width', ((R - L) * KU).toFixed(1) + 'px');
+      sty(B, B.pillPc, 'height', (h * KU).toFixed(1) + 'px'); sty(B, B.pillPc, 'top', ((S - h * KU) / 2).toFixed(1) + 'px');
+      sty(B, B.pillPc, 'opacity', tau < .5 ? '.85' : '0');
+      sty(B, B.pA, 'opacity', '0'); sty(B, B.pB, 'opacity', Math.max(.04, 1 - col).toFixed(3)); sty(B, B.pC, 'opacity', col.toFixed(3));
+      textExit(B, tau, W0, -(rightPx - (S + G)));
+      const xk = sstep(ks(tau, .05, .3)), xc = kl(R0 + 8 * 150 / 22 + 150, R, xk);
+      sty(B, B.xPc, 'right', (xc * KU).toFixed(1) + 'px'); sty(B, B.xPc, 'transform', `scale(${Math.max(.001, 1 - xk).toFixed(3)})`); sty(B, B.xPc, 'opacity', (.85 * (1 - xk)).toFixed(3));
+      const bk = o.bk ?? H4_BK;
+      if (tau < .35) {
+        sty(B, B.okPc, 'opacity', '.85'); sty(B, B.oB, 'opacity', (1 - ks(tau, .1, .35)).toFixed(3)); sty(B, B.dotPc, 'opacity', '0');
+        KD.pose(B.slot, tau < .1 ? KD.settleWig(tau, B.wigT) : { bar: { check: sstep(ks(tau, .1, .35)) } });
+      } else {
+        sty(B, B.okPc, 'opacity', '0'); sty(B, B.dotPc, 'transform', 'none');
+        sty(B, B.dotPc, 'opacity', (tau < bk + .5 ? .85 : kl(.85, .45, sstep(ks(tau, bk + .5, bk + .95)))).toFixed(3));
+        const p = KD.holdThenRest(tau, .35, .55);
+        if (tau >= .5 && tau < bk) Object.assign(p, KD.budHold(ks(tau, .5, .65)));
+        else if (tau >= bk) { const r = KD.budRet(tau - bk); p.body = r.body; p.bud = r.bud; if (r.l) p.l = Object.assign({}, p.l, r.l); }
+        KD.pose(B.dot, p);
+      }
       return;
     }
-    const seg = KD.util.seg, end = o.bud ? DONE_T.bud : o.flo ? DONE_T.flo : DONE_T.hop, fadeAt = end - .45;
-    ds(el, lt < end ? 'hop' : 'rest');
-    const ck = 1 - seg(lt, .7, .92);
-    let p;
-    if (o.bud && lt >= .8) p = KD.budPose(lt - .8, -1, 2.3);
-    else if (o.flo && lt >= .95) { const m = KD.MOMENTS[o.flo]; p = m.pose(Math.min(m.D, lt - .95), -1); }
-    else {
-      const h = seg(lt, .8, 1.1), hop = !o.flo && !o.bud && h > 0 && h < 1 ? -Math.sin(Math.PI * h) * 26 : 0, sq = o.flo || o.bud ? 0 : bump(lt, 1.1, 1.28);
-      p = { body: { anchor: 'b', ty: hop, sx: 1 + .1 * sq, sy: 1 - .1 * sq } };
+    const land = .44, pw = W0 * (1 - ACCEL(ks(tau, .04, land)));
+    sty(B, B.pillPc, 'width', pw.toFixed(1) + 'px'); sty(B, B.pillPc, 'opacity', pw > 2 * KU ? '.85' : '0'); sty(B, B.pillPc, 'border-radius', radius(pw));
+    textExit(B, tau, W0, 0);
+    const xs = 1 - sstep(ks(tau, 0, .18));
+    sty(B, B.xPc, 'transform', `scale(${Math.max(.001, xs).toFixed(3)})`); sty(B, B.xPc, 'opacity', (.85 * xs).toFixed(3));
+    const bs = 1 + .05 * hann(tau, land - .08, land + .1);
+    if (tau < land) {
+      sty(B, B.okPc, 'opacity', '.85'); sty(B, B.okPc, 'transform', `scale(${bs.toFixed(3)})`); sty(B, B.oB, 'opacity', (1 - ks(tau, .25, land)).toFixed(3)); sty(B, B.dotPc, 'opacity', '0');
+      KD.pose(B.slot, tau < .25 ? KD.settleWig(tau, B.wigT) : { bar: { check: sstep(ks(tau, .25, land)) } });
+    } else {
+      sty(B, B.okPc, 'opacity', '0'); sty(B, B.dotPc, 'transform', 'none');
+      sty(B, B.dotPc, 'opacity', kl(.85, .45, sstep(ks(tau, 1.25, 1.7))).toFixed(3));
+      KD.pose(B.dot, Object.assign(KD.holdThenRest(tau, land), { body: { s: bs } }));
     }
-    if (ck > 0) p = Object.assign({}, p, { check: ck });
-    KD.pose(B.dot, p);
-    B.dotPc.style.opacity = lt < end ? n2(lerp(.85, .45, seg(lt, fadeAt, end))) : '';
   }
-  // state: rest | press | tap | busy (with status word) | done. lt (seconds into the state) draws a still frame for scrubbing.
-  function setBubble(el, s, word, lt, o) {
-    if (!el) return;
-    const B = bub(el);
-    if (s === 'busy' || s === 'done') {
-      const w = word || el._word || 'Almost there';
-      el._word = w;
-      const st = el.querySelector('.st');
-      if (st.textContent !== w) st.textContent = w;
-      el.style.setProperty('--pw', Math.max(PILL, tw(w) + 30 * K * 2.6).toFixed(1) + 'px');
-    } else el.style.setProperty('--pw', PILL.toFixed(1) + 'px');
-    if (RM && s === 'done' && lt == null) lt = .5;
+  function toRest(B) {
+    KD.stop(B.dot); KD.stop(B.slot); KD.stop(B.txt); clearTimeout(B.pendT); B.pend = null; B.swap = null;
+    KD.pose(B.dot, {}); KD.pose(B.slot, {});
+    B.dotPc.style.opacity = ''; B.w1.style.filter = ''; wordStill(B, ''); B.stage = 'hear';
+    commit(B, 'rest');
+  }
+  // state: rest | press | tap | busy (with a status word) | done. lt (seconds into the state) draws a still frame for scrubbing.
+  // o.stage: 'hear' | 'tidy' for a busy word; o.bud: the take was copied (the H4 bud hand-off), o.bk: when the bud goes home
+  function setBubble(el, s, word, lt, o = {}) {
+    if (!el) return Promise.resolve(true);
+    const B = bub(el), from = B.s;
+    if (B.gone && s !== 'rest') return Promise.resolve(false);
+    if (s === 'rest') { if (from !== 'rest' || B.dot.anim || B.inl.size) toRest(B); return Promise.resolve(true); }
+    if (s === 'press') { if (from === 'press') return Promise.resolve(true); toRest(B); commit(B, 'press'); return Promise.resolve(true); }
+    if (s === 'tap') {
+      if (from === 'tap' && lt == null) return Promise.resolve(true);
+      if (from === 'busy' || from === 'done') toRest(B);
+      KD.pose(B.slot, { bar: { check: 1 } });
+      if (RM || (lt != null && lt >= UNROLL_T) || (from !== 'rest' && from !== 'press' && lt == null)) { commit(B, 'tap'); return Promise.resolve(true); }
+      B.el.classList.add('drv'); ds(el, 'tap'); B.s = 'tap';
+      if (lt != null) { KD.stop(B.dot); unrollAt(B, lt); return Promise.resolve(true); }
+      return KD.play(B.dot, t => unrollAt(B, t), UNROLL_T, 'unroll').then(ok => { if (ok) { KD.pose(B.dot, {}); commit(B, 'tap'); } return ok; });
+    }
+    if (s === 'busy') {
+      if (from !== 'busy') {
+        if (B.dot.anim || B.inl.size || from === 'done') { KD.stop(B.dot); KD.pose(B.dot, {}); B.w1.style.filter = ''; commit(B, from === 'done' ? 'rest' : from); }
+        if (from !== 'tap') wordStill(B, '');
+        B.stage = 'hear'; ds(el, 'busy'); B.s = 'busy';
+      }
+      if (RM || lt != null) { KD.stop(B.slot); KD.pose(B.slot, KD.busyPose(lt ?? .6)); } else busyLoop(B);
+      sayWord(B, word ?? (B.word || 'Almost there'), o.stage);
+      return Promise.resolve(true);
+    }
     if (s === 'done') {
-      KD.stop(B.slot);
-      if (lt != null) { KD.stop(B.dot); doneAt(B, lt, o); return Promise.resolve(true); }
+      if (from !== 'done') { B.wigT = loopT(B); KD.stop(B.slot); if (!B.word.trim()) wordStill(B, word || 'Almost there'); }
+      if (RM && lt == null) lt = .6;
+      if (lt != null && lt >= doneT(o) && from === 'rest') return Promise.resolve(true);
+      if (lt != null) { KD.stop(B.dot); KD.stop(B.txt); B.s = 'done'; if (lt >= doneT(o)) { toRest(B); } else doneAt(B, lt, o); return Promise.resolve(true); }
       if (B.done) return B.done;
-      const dur = (o && o.bud ? DONE_T.bud : o && o.flo ? DONE_T.flo : DONE_T.hop) + .05;
-      B.done = KD.play(B.dot, t => doneAt(B, t, o), dur, 'done').then(ok => { B.done = null; if (ok) { KD.pose(B.dot, {}); B.dotPc.style.opacity = ''; ds(el, 'rest'); } return ok; });
+      B.s = 'done';
+      B.done = settleSwap(B).then(() => KD.play(B.dot, t => doneAt(B, t, o), doneT(o) + .02, 'done')).then(ok => {
+        B.done = null; if (ok) toRest(B); return ok;
+      });
       return B.done;
     }
-    if (B.done || B.dirty || (B.dot.anim && s !== 'rest')) { KD.stop(B.dot); KD.pose(B.dot, {}); KD.pose(B.slot, {}); B.dotPc.style.opacity = ''; B.dirty = false; }
-    if (s === 'busy') { if (RM || lt != null) { KD.stop(B.slot); KD.pose(B.slot, KD.busyPose(lt ?? .6)); } else busyLoop(B); }
-    else if (B.slot.anim) { KD.stop(B.slot); KD.pose(B.slot, {}); }
-    ds(el, s);
     return Promise.resolve(true);
   }
   // a Dot moment on the resting bubble (it brightens while it plays, as in the app)
   async function dotMoment(el, name) {
     if (RM || !el || el.dataset.s !== 'rest') return false;
     const B = bub(el);
-    if (B.dot.anim) return false;
+    if (B.dot.anim || B.gone) return false;
     B.dotPc.style.opacity = '.85';
     const ok = await KD.moment(B.dot, name, -1);
     B.dotPc.style.opacity = '';
     return ok;
   }
+  // the keyboard opens: Dot comes in (an everyday entrance, or E14 Breath in the first time), then dims to rest
+  function dotEnter(el, id) {
+    const B = bub(el);
+    if (RM) { B.gone = false; KD.pose(B.dot, {}); return Promise.resolve(true); }
+    toRest(B); B.gone = false;
+    const E = KD.ENTS[id || KD.nextEntrance()];
+    return KD.play(B.dot, t => {
+      KD.pose(B.dot, E.pose(Math.min(t, E.D), -1));
+      B.dotPc.style.opacity = t < E.D + .15 ? '.85' : kl(.85, .45, sstep(ks(t, E.D + .15, E.D + .55))).toFixed(3);
+    }, E.D + .56, 'enter').then(ok => { KD.pose(B.dot, {}); B.dotPc.style.opacity = ''; return ok; });
+  }
+  // the keyboard closes: X4 Droplet reabsorb (it runs back to its edge and is drunk back in)
+  function dotLeave(el) {
+    const B = bub(el);
+    toRest(B); B.gone = true;
+    if (RM) { KD.pose(B.dot, { body: { a: 0 } }); return Promise.resolve(true); }
+    return KD.leave(B.dot, -1);
+  }
+  function dotHide(el) { const B = bub(el); toRest(B); B.gone = true; KD.pose(B.dot, { body: { a: 0 } }); }
   const nextNudge = KD.picker(KD.NUDGES), nextFlourish = KD.picker(KD.FLOURISH);
   const KBTOP = 932 - 322, BUBY = 440;
   function statusBar() {
@@ -251,8 +400,8 @@
     if (P.typed.textContent !== s) P.typed.textContent = s;
     if (P.round) P.round.innerHTML = s ? ic.send : ic.mic;
   }
-  // a dictation, start to finish, in real time (used where it isn't scrubbed)
-  // o.copy: copied instead of typed in (the C2 copy chip buds off, then the text is pasted)
+  // a dictation, start to finish, in real time (used where it isn't scrubbed).
+  // o.copy: copied instead of typed in, so the pill hands off to the C2 copy bud (H4), then the text is pasted
   async function dictate(P, text, alive = () => true, o = {}) {
     const steps = [
       () => { setBubble(P.bub, 'rest'); setTyped(P, ''); }, 600,
@@ -260,20 +409,21 @@
       () => { setBubble(P.bub, 'tap'); }, 260,
       () => P.finger.classList.remove('on'), 1600,
       () => { P.finger.classList.add('on'); }, 200,
-      () => { P.finger.classList.remove('on'); setBubble(P.bub, 'busy', 'Listening back'); }, 650,
-      () => setBubble(P.bub, 'busy', 'Tidying up'), 650,
-      () => setBubble(P.bub, 'busy', 'Almost there'), 500,
+      // each status phrase holds at least 900 ms; the stage change gets the one shimmer
+      () => { P.finger.classList.remove('on'); setBubble(P.bub, 'busy', 'Listening back', null, { stage: 'hear' }); }, 1250,
+      () => setBubble(P.bub, 'busy', 'Tidying up', null, { stage: 'tidy' }), 1250,
+      () => setBubble(P.bub, 'busy', 'Almost there', null, { stage: 'tidy' }), 1000,
     ];
     for (let i = 0; i < steps.length; i += 2) { if (!alive()) return false; steps[i](); await sleep(steps[i + 1]); }
     if (!alive()) return false;
-    const done = setBubble(P.bub, 'done', null, null, o.copy ? { bud: true } : o.flo ? { flo: o.flo } : undefined);
+    const done = setBubble(P.bub, 'done', null, null, o.copy ? { bud: true, bk: 2.7 } : undefined);
     if (o.copy) {
       await sleep(1900); if (!alive()) return false;
       P.tip?.classList.add('on');
       await sleep(800); if (!alive()) return false;
       setTyped(P, text); P.tip?.classList.remove('on');
     } else {
-      await sleep(720); if (!alive()) return false;
+      await sleep(420); if (!alive()) return false;   // the text goes in as the ✓ lands
       const t0 = performance.now(), dur = 900;
       await new Promise(res => { const f = now => { if (!alive()) return res(); const x = clamp((now - t0) / dur); setTyped(P, text.slice(0, Math.round(text.length * x))); x < 1 ? requestAnimationFrame(f) : res(); }; requestAnimationFrame(f); });
     }
@@ -347,25 +497,37 @@
   }
   // the phone runs a real dictation on a loop while it is the thing on screen
   let heroLoopOn = true, heroRunning = false, heroWaved = false;
+  const heroScreen = $('.screen', heroP.root);
   async function heroLoop() {
     if (heroRunning) return; heroRunning = true;
-    await sleep(900);
-    // first thing: Dot says hello with the side-aware wave (it sits on the right edge, so the left leaf waves)
-    if (!heroWaved && heroLoopOn) { heroWaved = true; await dotMoment(heroP.bub, 'wave'); await sleep(500); }
+    // first thing: Dot's first appearance (E14 Breath in), then hello with the side-aware wave
+    // (it sits on the right edge, so the left leaf waves)
+    if (!heroWaved && heroLoopOn) { heroWaved = true; await sleep(500); await dotEnter(heroP.bub, 'E14'); await sleep(350); await dotMoment(heroP.bub, 'wave'); await sleep(500); }
     let n = 0;
     while (heroLoopOn && !document.hidden) {
+      if (bub(heroP.bub).gone) await heroKeyboard(true);
       await dictate(heroP, CLEAN, () => heroLoopOn);
       await sleep(1100);
-      // every other pause, an idle nudge from the pool (the keyboard is up and nobody is talking)
-      if (n++ % 2 === 0 && heroLoopOn && !document.hidden) { await dotMoment(heroP.bub, nextNudge()); await sleep(700); }
+      // every third pause the keyboard closes (Dot leaves: X4) and opens again (an everyday entrance);
+      // otherwise, every other pause, an idle nudge from the pool (the keyboard is up and nobody is talking)
+      if (!heroLoopOn || document.hidden) break;
+      if (n % 3 === 2) { await heroKeyboard(false); await sleep(900); if (heroLoopOn) await heroKeyboard(true); await sleep(600); }
+      else if (n % 3 === 0) { await dotMoment(heroP.bub, nextNudge()); await sleep(700); }
       else await sleep(1500);
+      n++;
     }
     heroRunning = false;
+  }
+  // the hero keyboard slides away and back; Dot leaves with the droplet exit and comes back with a pool entrance
+  async function heroKeyboard(open) {
+    if (open) { heroScreen.classList.remove('kbd'); await sleep(260); await dotEnter(heroP.bub); }
+    else { setTyped(heroP, ''); heroScreen.classList.add('kbd'); await sleep(60); await dotLeave(heroP.bub); }
   }
   if (RM) {
     setBubble(heroP.bub, 'rest'); setTyped(heroP, CLEAN);
     heroWords.forEach(w => w.classList.add('on')); hero.out.classList.add('on'); hero.chips.classList.add('on');
   } else {
+    dotHide(heroP.bub);
     scrub($('.hero-pin'), 'pin', p => { heroFrame(p); if (heroLoopOn) heroLoop(); });
     heroFrame(0); heroLoop();
     document.addEventListener('visibilitychange', () => { if (!document.hidden && heroLoopOn) heroLoop(); });
@@ -405,7 +567,7 @@
     }
     if (k === 2) {
       const word = t < .34 ? 'Listening back' : t < .67 ? 'Tidying up' : 'Almost there';
-      setBubble(V.bub, 'busy', word);
+      setBubble(V.bub, 'busy', word, null, { stage: t < .34 ? 'hear' : 'tidy' });
       V.lbl.textContent = 'Cleaning up'; V.st2.textContent = '';
       toks.forEach(x => { x.classList.remove('hid', 'last'); });
       toks.forEach((x, i) => {
@@ -417,7 +579,7 @@
       if (t > .76) V.lbl.textContent = 'It types';
     }
     if (k === 3) {
-      if (t < .1) setBubble(V.bub, 'busy', 'Almost there');
+      if (t < .1) setBubble(V.bub, 'busy', 'Almost there', null, { stage: 'tidy' });
       else setBubble(V.bub, 'done', 'Almost there', (t - .1) * 2.4);
       const x = seg(t, .38, .62);
       setTyped(P, CLEAN.slice(0, Math.round(CLEAN.length * x)));
@@ -456,11 +618,18 @@
   if (RM) { appsRow.classList.add('in'); appPh.forEach(P => setTyped(P, CLEAN)); }
   else {
     let appsGo = 0;
+    appPh.forEach(P => dotHide(P.bub));
     watch(appsRow, () => {
       appsRow.classList.add('in');
       const id = ++appsGo;
-      appPh.forEach(async (P, i) => { setTyped(P, ''); await sleep(500 + i * 900); if (id === appsGo) await dictate(P, CLEAN, () => id === appsGo, i === 2 ? { copy: true } : undefined); });
-    }, () => { appsGo++; }, .35);
+      // each phone's keyboard is up: Dot comes in with an everyday entrance (never the same one twice in a row), then a take
+      appPh.forEach(async (P, i) => {
+        setTyped(P, ''); dotHide(P.bub);
+        await sleep(350 + i * 520); if (id !== appsGo) return;
+        await dotEnter(P.bub); await sleep(400 + i * 380);
+        if (id === appsGo) await dictate(P, CLEAN, () => id === appsGo, i === 2 ? { copy: true } : undefined);
+      });
+    }, () => { appsGo++; appPh.forEach(P => dotHide(P.bub)); }, .35);
   }
 
   // ===================================================================== 4. offline
@@ -492,7 +661,7 @@
     slot.innerHTML = bubbleHTML(0);
     const b = $('.kkb', slot), s = slot.dataset.bub;
     slots[s] = b;
-    setBubble(b, s === 'done' ? 'rest' : s, s === 'busy' ? 'Tidying up' : null);
+    setBubble(b, s === 'done' ? 'rest' : s, s === 'busy' ? 'Tidying up' : null, s === 'tap' ? 1 : null);
   });
   if (RM) setBubble(slots.done, 'done', 'Almost there');
   else {
@@ -504,13 +673,13 @@
         while (alive()) { await dotMoment(slots.rest, nextNudge()); await sleep(2200); }
       })();
       (async () => {   // tidying up: the status words change every 1.3 s while the bar wiggles
-        const words = [...PLAYFUL.hear, ...PLAYFUL.tidy]; let i = 1;
-        while (alive()) { await sleep(1300); if (alive()) setBubble(slots.busy, 'busy', words[i++ % words.length]); }
+        const words = [...PLAYFUL.hear, ...PLAYFUL.tidy], n = PLAYFUL.hear.length; let i = 1;
+        while (alive()) { await sleep(1300); if (alive()) { const k = i++ % words.length; setBubble(slots.busy, 'busy', words[k], null, { stage: k < n ? 'hear' : 'tidy' }); } }
       })();
       (async () => {   // done: ✓ fold and hop, again and again
         await sleep(600);
         while (alive()) {
-          setBubble(slots.done, 'busy', 'Almost there'); await sleep(1300); if (!alive()) break;
+          setBubble(slots.done, 'busy', 'Almost there', null, { stage: 'tidy' }); await sleep(1300); if (!alive()) break;
           await setBubble(slots.done, 'done', 'Almost there'); await sleep(900);
         }
       })();
@@ -537,7 +706,8 @@
     const pb = $('.kkb', perSlot);
     let style = 'playful', auto = !RM, perRun = 0, onScreen = false;
     const mark = k => perBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.style === k)));
-    const show = (k, stage, w) => { pb.classList.toggle('off', k === 'off'); setBubble(pb, 'busy', w || ' '); if (perStage) perStage.textContent = stage === 'hear' ? 'While it hears you' : 'While it tidies up'; };
+    // the words swap with S3 Slot machine; the stage change (hearing → tidying) gets the one shimmer
+    const show = (k, stage, w) => { pb.classList.toggle('off', k === 'off'); setBubble(pb, 'busy', w || ' ', null, { stage }); if (perStage) perStage.textContent = stage === 'hear' ? 'While it hears you' : 'While it tidies up'; };
     // one pass through a style: its hearing words, then its tidying words (auto mode shows two of each)
     async function pass(k, alive) {
       const L = STYLES[k], few = auto ? 2 : 99;
