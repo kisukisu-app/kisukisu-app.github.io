@@ -171,7 +171,14 @@ footer .fine { margin-top: 14px; font-size: 14px; }
 .skin figcaption { margin-top: 8px; font-weight: 800; color: #16202B; font-size: 16px; }
 .shots { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 14px 0 6px; }
 .shots.one { margin-top: 22px; }
-.shot { margin: 0; width: min(270px, 44vw); text-align: center; }
-.shot img { display: block; width: 100%; height: auto; border-radius: 26px; border: 1px solid var(--line); box-shadow: 0 14px 34px rgba(30,60,90,.16); }
+.shot { margin: 0; width: min(390px, 100%); text-align: center; }
+.shots.one .shot { width: min(560px, 100%); }
+.shot img { display: block; width: 100%; height: auto; border-radius: 22px; border: 1px solid var(--line); background: #F3F6F9; box-shadow: 0 14px 34px rgba(30,60,90,.14); }
 .shot figcaption { margin-top: 10px; color: var(--ink2); font-size: 15px; font-weight: 700; }
-@media (max-width: 560px) { .skins { grid-template-columns: repeat(2, minmax(0, 1fr)); } .shot { width: min(240px, 70vw); } }
+@media (max-width: 560px) { .skins { grid-template-columns: repeat(2, minmax(0, 1fr)); }  }
+
+.voices { display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 18px 0 6px; }
+.voice { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 14px 12px 12px; text-align: center; }
+.vline { display: block; background: #2A1033; color: #fff; border: 2px solid #5B2A6E; border-radius: 999px; padding: 8px 10px; font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.voice b { display: block; margin-top: 10px; font-size: 18px; }
+@media (max-width: 700px) { .voices { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
