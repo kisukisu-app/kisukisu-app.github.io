@@ -14,8 +14,7 @@ KisuKisu is voice typing for Android. You talk the way you normally do, with the
 | [Offline voice typing](https://kisukisu-app.github.io/offline-voice-typing.html) | Voice typing with no internet or in airplane mode |
 | [Private voice typing](https://kisukisu-app.github.io/private-voice-typing.html) | No account, and what stays on your phone |
 | [Voice typing in any app](https://kisukisu-app.github.io/voice-typing-any-app.html) | The bubble, tap to talk or hold to talk |
-| [Make it yours](https://kisukisu-app.github.io/make-it-yours.html) | Free skins, voices and moves, and accent colours |
-| [What's new in 1.4](https://kisukisu-app.github.io/whats-new-in-1-4.html) | Rewards, Your journey, backup and more |
+| [Features](https://kisukisu-app.github.io/features.html) | Everything it does, with real examples |
 | [Will it run on my phone?](https://kisukisu-app.github.io/will-it-run-on-my-phone.html) | Android version, RAM, model sizes |
 | [KisuKisu vs Gboard voice typing](https://kisukisu-app.github.io/compare/gboard-voice-typing.html) | An honest side-by-side |
 | [A Wispr Flow alternative for Android](https://kisukisu-app.github.io/compare/wispr-flow-alternative-android.html) | On-device vs cloud, honestly compared |

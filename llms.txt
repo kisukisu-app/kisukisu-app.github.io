@@ -2,7 +2,7 @@
 
 > KisuKisu is a free voice-typing app for Android. You talk the way you talk (ums, restarts, "I mean") and it types clean text. A floating bubble next to your keyboard works in any app. Speech recognition and cleanup run on the phone, so it works offline and in airplane mode, with no account.
 
-KisuKisu is made by Akhil Srinivas. It is in closed testing on Google Play (version 1.4.0, package com.kisukisu.app). To join the Android beta, fill in the form at https://forms.gle/dwdAoq4V1xZWSHcG6 . Contact: kisukisuapp@gmail.com.
+KisuKisu is made by Akhil Srinivas. It is in closed testing on Google Play (package com.kisukisu.app). To join the Android beta, fill in the form at https://forms.gle/dwdAoq4V1xZWSHcG6 . Contact: kisukisuapp@gmail.com.
 
 ## Key facts for citation
 
@@ -25,7 +25,7 @@ KisuKisu is made by Akhil Srinivas. It is in closed testing on Google Play (vers
   - KisuKisu Cleanup is a small model trained for tidying dictation, based on Liquid AI LFM2.5 (LFM Open License v1.0).
   - Downloads also need about 350 MB of free-space headroom; low storage is flagged before anything downloads.
 - Other models selectable in Settings: Nemotron Live (~465 MB, live words while talking), Whisper Small, Base and Tiny, Moonshine Tiny, KisuKisu Cleanup Classic (Qwen3 0.6B, ~397 MB), Gemma 3 270M, Qwen3 0.6B, or a model added from a link.
-- New in 1.4: free skins, voices, moves and secrets earned by dictating (nine skins in the first drop: Scanline, Pulp Dots, Woofer, Night Drive, Mecha Plate, Sticker Bomb, Two-Ink, Vector, Vinyl Toy); Your journey, a progress screen in chapters with forgiving streaks; Blot lingers a moment after the keyboard closes; a practice box; Blot on or off per app; backup and restore to a file you choose (history optional, optional password). Progress stays on the phone and nothing is sent anywhere.
+- Make it yours: free skins, voices, moves and secrets earned by dictating (nine skins in the first drop: Scanline, Pulp Dots, Woofer, Night Drive, Mecha Plate, Sticker Bomb, Two-Ink, Vector, Vinyl Toy); Your journey, a progress screen in chapters with forgiving streaks; Blot lingers a moment after the keyboard closes; a practice box; Blot on or off per app; backup and restore to a file you choose (history optional, optional password). Progress stays on the phone and nothing is sent anywhere.
 - Data on the phone: dictation history (optional, clearable), recordings of failed dictations kept for retry (7, 30 or 90 days; all other recordings are deleted as soon as the text lands), dictionary, learned words, style examples. All removed on uninstall.
 
 ## Pages
@@ -34,8 +34,7 @@ KisuKisu is made by Akhil Srinivas. It is in closed testing on Google Play (vers
 - [Offline voice typing](https://kisukisu-app.github.io/offline-voice-typing.html): voice typing that works in airplane mode; what runs on the phone and what needs the internet.
 - [Private voice typing](https://kisukisu-app.github.io/private-voice-typing.html): no account, nothing uploaded; what stays on the phone, what goes over the network, and each permission explained.
 - [Voice typing in any app](https://kisukisu-app.github.io/voice-typing-any-app.html): the floating bubble in WhatsApp, Gmail, Slack and Notes; tap or hold to talk; typed in or copied.
-- [Make it yours: skins, voices and moves](https://kisukisu-app.github.io/make-it-yours.html): the nine skins, voice packs, moves, and how you earn them for free.
-- [What's new in KisuKisu 1.4](https://kisukisu-app.github.io/whats-new-in-1-4.html): rewards, Your journey, Blot linger, practice box, per-app on/off, backup and restore.
+- [Features](https://kisukisu-app.github.io/features.html): everything KisuKisu does, with real spoken lines and what it typed: cleanup, edit by voice, your words, skins, voices and Your journey.
 - [Will it run on my phone?](https://kisukisu-app.github.io/will-it-run-on-my-phone.html): Android version, 64-bit, RAM tiers, storage, and every model with its size.
 - [KisuKisu vs Gboard voice typing](https://kisukisu-app.github.io/compare/gboard-voice-typing.html): side-by-side with Gboard's built-in voice typing.
 - [Wispr Flow alternative for Android](https://kisukisu-app.github.io/compare/wispr-flow-alternative-android.html): how KisuKisu compares to Wispr Flow on Android.
