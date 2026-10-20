@@ -472,3 +472,24 @@ footer .fine { margin-top: 14px; font-size: 14px; }
 .rm .step-txt > div { opacity: 1; }
 .rm *, .rm *::before, .rm *::after { animation-duration: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0s !important; }
 .rm .fill .w::after { opacity: 1; }
+
+/* 1.4 rewards + journey */
+.rewards { padding: 90px 0 30px; }
+.rw-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 48px; align-items: center; }
+.rw-links { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; margin: 0; font-family: var(--f-head); font-weight: 800; }
+.rw-skins { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.rw-skin { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 12px 10px 10px; text-align: center;
+  box-shadow: 0 10px 26px var(--shadow); animation: rw-bob 5s ease-in-out infinite; animation-delay: calc(var(--i) * -.55s); }
+.rw-skin img { display: block; width: 100%; height: auto; border-radius: 10px; }
+.rw-skin figcaption { margin-top: 6px; font: 800 14px var(--f-head); color: #16202B; }
+@keyframes rw-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.journey { padding: 70px 0 60px; }
+.jy-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.jy-shots { position: relative; height: 560px; max-width: 460px; margin: 0 auto; width: 100%; }
+.jy-shots img { position: absolute; width: 250px; height: auto; border-radius: 26px; border: 1px solid var(--line); box-shadow: 0 22px 48px var(--shadow); }
+.jy-a { left: 0; top: 0; transform: rotate(-4deg); } .jy-b { right: 0; top: 56px; transform: rotate(3deg); }
+.jy-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; color: var(--ink2); }
+.jy-list b { color: var(--ink); font-family: var(--f-head); }
+@media (max-width: 860px) { .rw-grid, .jy-grid { grid-template-columns: 1fr; gap: 30px; } .jy-shots { height: 500px; } .jy-shots img { width: 220px; } }
+@media (max-width: 420px) { .rw-skins { gap: 8px; } .jy-shots img { width: 200px; } }
+.rm .rw-skin { animation: none !important; }

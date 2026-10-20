@@ -163,3 +163,15 @@ footer { margin: 56px 0 0; padding: 24px 0 48px; border-top: 1px solid var(--lin
 footer .cols { display: flex; gap: 20px 28px; flex-wrap: wrap; }
 footer a { color: inherit; }
 footer .fine { margin-top: 14px; font-size: 14px; }
+
+/* 1.4 rewards: skin gallery and app screenshots */
+.skins { display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 8px 0 14px; }
+.skin { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 12px 12px; text-align: center; }
+.skin img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.skin figcaption { margin-top: 8px; font-weight: 800; color: #16202B; font-size: 16px; }
+.shots { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 14px 0 6px; }
+.shots.one { margin-top: 22px; }
+.shot { margin: 0; width: min(270px, 44vw); text-align: center; }
+.shot img { display: block; width: 100%; height: auto; border-radius: 26px; border: 1px solid var(--line); box-shadow: 0 14px 34px rgba(30,60,90,.16); }
+.shot figcaption { margin-top: 10px; color: var(--ink2); font-size: 15px; font-weight: 700; }
+@media (max-width: 560px) { .skins { grid-template-columns: repeat(2, minmax(0, 1fr)); } .shot { width: min(240px, 70vw); } }

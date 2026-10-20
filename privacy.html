@@ -29,35 +29,48 @@ li { margin: 6px 0; }
 <header><a href="./"><svg width="36" height="36" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="#4682B4"/><path transform="translate(7 7) scale(0.86)" fill="#fff" d="M26.7,28.5 A25.43,25.43 0 0,0 26.7,71.5 A25.43,25.43 0 0,0 26.7,28.5 Z M45.25,22.05 A4.75,4.75 0 0,1 54.75,22.05 L54.75,77.95 A4.75,4.75 0 0,1 45.25,77.95 Z M73.3,28.5 A25.43,25.43 0 0,0 73.3,71.5 A25.43,25.43 0 0,0 73.3,28.5 Z"/></svg>KisuKisu</a></header>
 
 <h1>Privacy Policy</h1>
-<p class="muted">Effective 27 September 2026. Applies to the KisuKisu app for Android (package <code>com.kisukisu.app</code>).</p>
+<p class="muted">Effective 19 October 2026. Applies to the KisuKisu app for Android (package <code>com.kisukisu.app</code>), version 1.4 and later. Earlier versions are covered where this page says so.</p>
 
 <div class="card">
-<strong>The short version.</strong> KisuKisu turns your voice into text on your phone. There is no account, no sign-up, no ads, no analytics and no tracking. By default your voice and your text never leave your device. The only time anything is sent anywhere is if you choose to connect a cloud AI provider with your own key (see below).
+<strong>The short version.</strong> KisuKisu turns your voice into text on your phone. There is no account, no sign-up, no ads, no analytics and no tracking. By default your voice and your text never leave your device. The only time anything is sent anywhere is if you choose to connect a cloud provider with your own key (see below). If you do, that changes for the parts you send to it.
 </div>
 
 <h2>What stays on your phone</h2>
 <ul>
 <li><strong>Your voice.</strong> Audio from the microphone is turned into text by an AI speech model running on your phone, and a second on-device AI model tidies the text (fillers, repeats, punctuation). Your audio and text are never uploaded for this.</li>
-<li><strong>Your dictations.</strong> If "Keep history" is on, recent dictations are saved on your phone so you can copy, fix or delete them. Turn it off, or use "Clear history", at any time in Settings.</li>
-<li><strong>Kept recordings.</strong> If a dictation fails, its recording can be kept on your phone so you can retry it. You choose how long they are kept, or turn this off, in Settings.</li>
-<li><strong>Your words.</strong> Your dictionary, the corrections the app learns from, your style examples and per-app tone settings are all stored on your phone.</li>
-<li><strong>Contacts (optional).</strong> If you use "Import from contacts", the app reads contact names on your phone so it can spell them correctly. They are matched on your phone and never uploaded.</li>
+<li><strong>Your dictations.</strong> "Keep history" is on by default. While it is on, recent dictations are saved on your phone, along with the name of the app each one went into, so you can copy, fix or delete them. Your last dictation follows the same switch: it is cleared by "Clear history" and never saved when history is off. Turn history off, or use "Clear history", at any time in Settings.</li>
+<li><strong>Recordings.</strong> A recording is deleted as soon as its text has landed. Only a recording that failed is kept, on your phone, so you can try it again: for 7, 30 (the default) or 90 days, as you choose. Recordings are never uploaded, except to your cloud speech engine if you chose one.</li>
+<li><strong>Your words.</strong> Your dictionary and snippets, the corrections the app learns from, your Style memory and your per-app tone settings are stored on your phone. Style memory is made of past dictations that teach the polish step how you write. You can clear it any time under Words &rarr; Style memory. If you export it, it goes through Android's share sheet only and leaves no file behind.</li>
+<li><strong>Contacts (optional).</strong> If you use "Import from contacts", the app reads contact names on your phone so it can spell them correctly. They are matched on your phone and never sent to us or to any cloud provider. Names you import become part of your dictionary, which is included in Android's backup to your Google account if you use it (see Backups).</li>
 </ul>
-<p>All of this is deleted when you uninstall the app or clear its data.</p>
+<p>All of this is deleted when you uninstall the app or clear its data. You can also delete parts of it without uninstalling, with "Clear history" and "Style memory &rarr; Clear".</p>
+
+<h2>Backups</h2>
+<p>Android can back up apps to your Google account and move them to a new phone. From version 1.4, KisuKisu lets Android back up only your settings, Blot's progress and rewards, your per-app choices, your dictionary and snippets, and your tone settings. Your dictation history, recordings, Style memory, API keys and models are never included. Versions before 1.4 let Android back up all app data, including dictation history. Android replaces that backup with the smaller one the next time it backs up.</p>
+<p>You can also save your own backup file (Settings &rarr; Privacy &amp; help &rarr; Backup &amp; restore) to a place you choose. Dictation history is left out unless you tick it, API keys are never included, and you can protect the file with a password (AES-256 encryption). If you include history without a password, the app warns you. KisuKisu never sends this file anywhere.</p>
+
+<h2>Rewrite selected text and the clipboard</h2>
+<p>When you select text in another app and choose KisuKisu, or ask Blot to rewrite text you copied, the rewrite runs on your phone with the on-device model. Only if you picked a cloud polish provider in Settings &rarr; Advanced is that text (and any spoken instruction) sent to that provider. There is no silent fallback to the cloud. Rewrites are not saved to your history, Style memory or word learning. The result replaces your selection, or goes to the clipboard when the text is read-only. To insert text in some apps, KisuKisu briefly puts it on the clipboard and then puts your previous clipboard back.</p>
 
 <h2>What goes over the internet</h2>
 <ul>
 <li><strong>Model downloads.</strong> The first time you set up, and whenever you choose another model, the app downloads AI model files from Hugging Face (huggingface.co), and possibly GitHub, like any file download. Nothing about you or your dictations is sent. Those sites see a normal download request, including your IP address, under their own privacy policies. Models you add yourself from a link are downloaded from the address you give.</li>
-<li><strong>Cloud providers, only if you turn them on.</strong> In Settings you can choose to use a cloud speech or AI provider (for example OpenAI, Groq, Anthropic, OpenRouter or Vercel AI Gateway) with your own API key. If you do, the audio or text of each dictation is sent to that provider to be processed, under that provider's own privacy policy and your agreement with them. Your API key is stored on your phone. If you never set this up, nothing is sent.</li>
+<li><strong>Cloud providers, only if you turn them on.</strong> In Settings &rarr; Advanced you can choose a cloud speech engine (for example Groq, OpenAI, or any compatible endpoint you enter) or a cloud polish provider (for example Anthropic, OpenAI, OpenRouter, Vercel AI Gateway, or any compatible endpoint you enter), using your own API key. If you do:
+<ul>
+<li>a speech engine receives the recording of each dictation, plus your dictionary words as spelling hints (never names imported from your contacts);</li>
+<li>a polish provider receives the text to tidy or rewrite and your tone settings. At the Medium or Full polish levels it also receives the two past dictations from your Style memory that are most like the current one, as examples.</li>
+</ul>
+This goes straight from your phone to the provider over an encrypted connection, under the provider's own privacy policy and your agreement with them. We never see it. Your API key is stored only on your phone, in the app's private storage, and is never included in backups. If you never set this up, nothing is sent.</li>
 </ul>
 
 <h2>Permissions and why</h2>
 <ul>
 <li><strong>Microphone</strong>: to hear you while you dictate. It is used only while the bubble is listening.</li>
-<li><strong>Accessibility service</strong>: to put your dictated text into the text box you are typing in, and to notice when a text box and keyboard are open so the bubble can appear. KisuKisu does not collect, store or send the content of your screen, and the service is not used for anything else. You are asked for consent, with an explanation, before you turn it on, and you can turn it off at any time in Android's settings.</li>
+<li><strong>Accessibility service</strong>: to put your dictated text into the text box you are typing in, and to notice when a text box and keyboard are open so Blot can appear. It reads the text box you are in (so your words land at the cursor, including its current text) and which app is open (so Blot follows your per-app choices under Blot &rarr; Apps, and stays away from password fields, cameras and games). In some apps it uses the clipboard to paste, then restores what was there. It does not read or save the rest of your screen and sends nothing anywhere. History records which app each dictation went into. You are asked for consent, with this explanation, before you turn it on, and you can turn it off at any time in Android's settings.</li>
 <li><strong>Display over other apps</strong>: to show the floating bubble next to your keyboard.</li>
-<li><strong>Notifications</strong>: for the bubble's ongoing notification and an optional "fix a word" reminder after a dictation.</li>
+<li><strong>Notifications</strong>: for the bubble's ongoing notification, a "fix a word" reminder after some dictations, a "your dictation is ready" note, and Blot's new rewards. None of them show your dictated text.</li>
 <li><strong>Contacts (optional)</strong>: only for "Import from contacts", as described above.</li>
+<li><strong>App list</strong>: the Apps screen lists the apps on your phone so you can choose where Blot appears. The list stays on your phone.</li>
 <li><strong>Run at startup</strong>: to bring the bubble back after your phone restarts, if you had it on.</li>
 <li><strong>Internet</strong>: for model downloads, and for cloud providers if you choose to use one.</li>
 </ul>
@@ -66,12 +79,16 @@ li { margin: 6px 0; }
 <ul>
 <li>No account and no sign-up.</li>
 <li>No advertising, and no advertising or tracking IDs.</li>
-<li>No analytics, crash reporting or usage tracking.</li>
+<li>No analytics, crash reporting or usage tracking. All connections the app makes use HTTPS.</li>
 <li>We do not sell or share your data. We never receive your dictations in the first place.</li>
+<li><strong>No logs.</strong> KisuKisu does not send logs anywhere. Release builds of version 1.4 and later write no dictated text, prompts or app names to the phone's system log. Versions up to 1.3.2 did write some, which ordinary apps cannot read but which can end up in a bug report you choose to share.</li>
 </ul>
 
+<h2>Feedback</h2>
+<p>If you use "Send feedback" in the app, your email app opens with the app version, phone model and Android version filled in. Nothing is sent until you press send, and we use your email only to reply.</p>
+
 <h2>Children</h2>
-<p>KisuKisu is a general productivity tool and is not directed at children under 13.</p>
+<p>KisuKisu is a general productivity tool and is not directed at children under 13. We do not knowingly collect any data from anyone, including children.</p>
 
 <h2>Changes</h2>
 <p>If this policy changes, the new version will be posted on this page with a new effective date.</p>
@@ -80,7 +97,7 @@ li { margin: 6px 0; }
 <p>KisuKisu is made by <a href="https://github.com/akhilsrini">Akhil Srinivas</a>.</p>
 
 <h2>Contact</h2>
-<p>Questions about privacy: <a href="mailto:kisukisuapp@gmail.com">kisukisuapp@gmail.com</a></p>
+<p>Questions about privacy, or anything else: <a href="mailto:kisukisuapp@gmail.com">kisukisuapp@gmail.com</a></p>
 </main>
 </body>
 </html>
