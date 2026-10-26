@@ -29,7 +29,7 @@ li { margin: 6px 0; }
 <header><a href="./"><svg width="36" height="36" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="#4682B4"/><path transform="translate(7 7) scale(0.86)" fill="#fff" d="M26.7,28.5 A25.43,25.43 0 0,0 26.7,71.5 A25.43,25.43 0 0,0 26.7,28.5 Z M45.25,22.05 A4.75,4.75 0 0,1 54.75,22.05 L54.75,77.95 A4.75,4.75 0 0,1 45.25,77.95 Z M73.3,28.5 A25.43,25.43 0 0,0 73.3,71.5 A25.43,25.43 0 0,0 73.3,28.5 Z"/></svg>KisuKisu</a></header>
 
 <h1>Privacy Policy</h1>
-<p class="muted">Effective 19 October 2026. Applies to the KisuKisu app for Android (package <code>com.kisukisu.app</code>), version 1.4 and later. Earlier versions are covered where this page says so.</p>
+<p class="muted">Effective 25 October 2026. Applies to the KisuKisu app for Android (package <code>com.kisukisu.app</code>), version 1.4 and later. Earlier versions are covered where this page says so.</p>
 
 <div class="card">
 <strong>The short version.</strong> KisuKisu turns your voice into text on your phone. There is no account, no sign-up, no ads, no analytics and no tracking. By default your voice and your text never leave your device. The only time anything is sent anywhere is if you choose to connect a cloud provider with your own key (see below). If you do, that changes for the parts you send to it.
@@ -55,7 +55,7 @@ li { margin: 6px 0; }
 <h2>What goes over the internet</h2>
 <ul>
 <li><strong>Model downloads.</strong> The first time you set up, and whenever you choose another model, the app downloads AI model files from Hugging Face (huggingface.co), and possibly GitHub, like any file download. Nothing about you or your dictations is sent. Those sites see a normal download request, including your IP address, under their own privacy policies. Models you add yourself from a link are downloaded from the address you give.</li>
-<li><strong>Cloud providers, only if you turn them on.</strong> In Settings &rarr; Advanced you can choose a cloud speech engine (for example Groq, OpenAI, or any compatible endpoint you enter) or a cloud polish provider (for example Anthropic, OpenAI, OpenRouter, Vercel AI Gateway, or any compatible endpoint you enter), using your own API key. If you do:
+<li><strong>Cloud providers, only if you turn them on.</strong> In Settings &rarr; Advanced you can choose a cloud speech engine (for example Groq, OpenAI, or any compatible endpoint you enter) or a cloud polish provider (for example Anthropic, OpenRouter, Vercel AI Gateway, or any compatible endpoint you enter), using your own API key. If you do:
 <ul>
 <li>a speech engine receives the recording of each dictation, plus your dictionary words as spelling hints (never names imported from your contacts);</li>
 <li>a polish provider receives the text to tidy or rewrite and your tone settings. At the Medium or Full polish levels it also receives the two past dictations from your Style memory that are most like the current one, as examples.</li>
@@ -84,6 +84,12 @@ This goes straight from your phone to the provider over an encrypted connection,
 <li><strong>No logs.</strong> KisuKisu does not send logs anywhere. Release builds of version 1.4 and later write no dictated text, prompts or app names to the phone's system log. Versions up to 1.3.2 did write some, which ordinary apps cannot read but which can end up in a bug report you choose to share.</li>
 </ul>
 
+<h2>Security</h2>
+<p>What KisuKisu keeps stays in the app's private storage on your phone, where other apps can't read it. A backup file can be locked with a password (AES-256 encryption). Every connection the app makes, such as a model download or a cloud provider you chose, uses HTTPS. No system is perfectly secure, but we keep what can go wrong small by keeping your data on your phone.</p>
+
+<h2>If there is a data breach</h2>
+<p>We don't keep your data on any server, so a breach on our side can't expose your dictations. If we ever learn of a problem that affects KisuKisu users, we will post it on this page and notify people as the law requires.</p>
+
 <h2>Feedback</h2>
 <p>If you use "Send feedback" in the app, your email app opens with the app version, phone model and Android version filled in. Nothing is sent until you press send, and we use your email only to reply.</p>
 
@@ -91,7 +97,7 @@ This goes straight from your phone to the provider over an encrypted connection,
 <p>KisuKisu is a general productivity tool and is not directed at children under 13. We do not knowingly collect any data from anyone, including children.</p>
 
 <h2>Changes</h2>
-<p>If this policy changes, the new version will be posted on this page with a new effective date.</p>
+<p>If this policy changes, the new version will be posted on this page with a new effective date. Earlier versions are available on request at <a href="mailto:kisukisuapp@gmail.com">kisukisuapp@gmail.com</a>.</p>
 
 <h2>Who we are</h2>
 <p>KisuKisu is made by <a href="https://github.com/akhilsrini">Akhil Srinivas</a>.</p>
