@@ -342,7 +342,7 @@
     runTry();
 
     // =================================================================== 6. resting Blots, and the final line filling in word by word
-    $$('[data-dot]').forEach(el => restDot(el, el.classList.contains('big') ? 92 : 44));
+    $$('[data-dot]').forEach(el => restDot(el, el.classList.contains('huge') ? 180 : el.classList.contains('big') ? 92 : 44));
     const fillWords = $$('.fill .w');
     fillWords.forEach(w => w.dataset.t = w.textContent);
     if (!RM) scrub($('.fill'), 'view', p => { const x = seg(p, .15, .85) * fillWords.length; fillWords.forEach((w, i) => w.style.setProperty('--o', clamp(x - i).toFixed(3))); });

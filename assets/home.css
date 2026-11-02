@@ -378,13 +378,20 @@ footer .fine { margin-top: 14px; font-size: 14px; }
 .kbub { position: absolute; z-index: 10; pointer-events: none; line-height: 0; }
 .mini { display: inline-block; overflow: hidden; flex: none; line-height: 0; }
 
-/* ---------- 5. unlockables: a hint, the rest is in the app ---------- */
-.unlock { padding: 100px 0 10px; }
-.unlock-card { display: flex; gap: 24px; align-items: center; max-width: 860px; margin: 0 auto; background: var(--card); border-radius: 30px; padding: 28px 30px;
-  box-shadow: 0 30px 70px -40px rgba(var(--acc-rgb), .55), 0 0 0 1px var(--line); }
-.unlock-card h2 { font-size: clamp(30px, 3.6vw, 44px); margin: 0 0 8px; }
-.unlock-card .sub { margin: 0 0 14px; }
-.unlock-card a { font: 800 17px var(--f-head); }
-@media (max-width: 600px) { .unlock-card { flex-direction: column; align-items: flex-start; padding: 24px 22px; } }
+/* ---------- 3. meet Blot: the bubble up front, with a few of its skins ---------- */
+.hero h1 s.gone { text-decoration-thickness: .09em; text-decoration-color: var(--acc); color: var(--ink2); opacity: .7; }
+.blot { padding: 100px 0 20px; }
+.blot-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(24px, 5vw, 64px); align-items: center; max-width: 980px; margin: 0 auto; }
+.blot-stage { position: relative; display: grid; place-items: center; min-height: 260px; }
+.blot-stage .glow { position: absolute; inset: 10% 15%; border-radius: 50%; background: radial-gradient(closest-side, rgba(var(--acc-rgb), .35), transparent); filter: blur(10px); }
+.blot-stage .mini.huge { position: relative; filter: drop-shadow(0 18px 28px rgba(var(--acc-rgb), .4)); }
+.blot-copy h2 { font-size: clamp(32px, 4vw, 52px); margin: 0 0 12px; }
+.blot-copy .sub { margin: 0 0 12px; }
+.blot-copy a { font: 800 17px var(--f-head); }
+.blot .skins { display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 980px; margin: 36px auto 10px; }
+.blot .skin { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 14px 12px 12px; text-align: center; }
+.blot .skin img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.blot .skin figcaption { margin-top: 8px; font: 800 16px var(--f-head); color: var(--ink); }
+@media (max-width: 760px) { .blot-grid { grid-template-columns: 1fr; } .blot-stage { min-height: 220px; } .blot .skins { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .final .mini.big { display: block; margin: 0 auto 22px; filter: drop-shadow(0 14px 22px rgba(var(--acc-rgb), .35)); }
 .foot-in { max-width: var(--max); margin: 0 auto; padding: 0 24px; }

@@ -176,8 +176,8 @@
   <div class="hero-pin" data-scrub="hero">
     <div class="hero-stage">
       <div class="hero-copy">
-        <h1 id="hero-h"><span class="rise" style="--d:0">Talk messy.</span><br><span class="rise" style="--d:1">Send it <em>clean.</em></span></h1>
-        <p class="lede rise" style="--d:2">Voice typing for Android that cleans up as you talk. Works in any app. Runs on your phone, even in airplane mode.</p>
+        <h1 id="hero-h"><span class="rise" style="--d:0">Every <s class="gone">um</s>, gone.</span><br><span class="rise" style="--d:1">Send <em>what you meant.</em></span></h1>
+        <p class="lede rise" style="--d:2">Say it however it comes out. KisuKisu takes out the ums, the restarts and the “I mean”, and types the sentence you meant. Offline AI voice typing. Android, any app, even in airplane mode.</p>
         <div class="cta-row rise" style="--d:3">
           <a class="cta" href="https://forms.gle/dwdAoq4V1xZWSHcG6">Join the Android beta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           <p class="promises">Free. No sign-up. Any app.</p>
@@ -200,7 +200,58 @@
   </div>
 </section>
 
-<!-- 2. HOW IT WORKS: pinned on desktop, stacked on phones -->
+<!-- 2. TRY THE CLEANUP: the clearest thing we do, right under the hero -->
+<section class="try" id="try" aria-labelledby="try-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 id="try-h">Messy in.<br><span class="grey">Clean out.</span></h2>
+      <p class="sub">This is the same rule-based cleanup the app runs first, running here in your browser. The app can also polish with an on-device AI model.</p>
+    </div>
+    <div class="try-card reveal">
+      <label for="try-in" class="tag">You say</label>
+      <textarea id="try-in" rows="3" spellcheck="false">um, I'm running fifteen minutes late. uh, can we push the call to two, I mean three pm?</textarea>
+      <div class="try-bar">
+        <div class="ex" role="group" aria-label="Examples">
+          <button type="button" data-ex="um, I land at six, I mean seven pm. uh, can you pick me up?">Airport</button>
+          <button type="button" data-ex="send it to mark, I mean john">Wrong name</button>
+          <button type="button" data-ex="uh, can you book a table for twelve, I mean fourteen people? um, thanks!">Booking</button>
+          <button type="button" data-ex="shopping list one eggs two flour three sugar">List</button>
+        </div>
+        <button type="button" class="cta" id="try-go">Clean it up</button>
+      </div>
+      <div class="try-out" aria-live="polite">
+        <div><span class="tag">What it heard</span><p class="diff" id="try-diff"></p></div>
+        <div><span class="tag acc">What it types</span><p class="result" id="try-res"></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. MEET BLOT: the bubble, and the rewards it unlocks in chapters -->
+<section class="blot" id="blot" aria-labelledby="blot-h">
+  <div class="wrap">
+    <div class="blot-grid">
+      <div class="blot-stage reveal" aria-hidden="true"><div class="glow"></div><span class="mini huge" data-dot></span></div>
+      <div class="blot-copy reveal">
+        <h2 id="blot-h">Meet Blot.<br><span class="grey">It does the tidying.</span></h2>
+        <p class="sub">Blot is the round bubble that sits by your keyboard in every app. Tap it and talk. It listens, cleans up what you said, and steps out of the way when you're done.</p>
+        <p class="sub">The more you talk, the more Blot unlocks: new skins, voices and moves, in chapters. Free, nothing to buy, and your progress stays on your phone.</p>
+        <a href="/features.html">See everything it does →</a>
+      </div>
+    </div>
+    <div class="skins reveal" aria-label="Some of Blot's skins">
+      <figure class="skin"><img src="assets/app/skin-scanline.webp" width="284" height="96" loading="lazy" alt="Scanline skin: the listening pill and the bubble"><figcaption>Scanline</figcaption></figure>
+      <figure class="skin"><img src="assets/app/skin-pulp.webp" width="284" height="96" loading="lazy" alt="Pulp Dots skin: the listening pill and the bubble"><figcaption>Pulp Dots</figcaption></figure>
+      <figure class="skin"><img src="assets/app/skin-nightdrive.webp" width="284" height="96" loading="lazy" alt="Night Drive skin: the listening pill and the bubble"><figcaption>Night Drive</figcaption></figure>
+      <figure class="skin"><img src="assets/app/skin-vinyl.webp" width="284" height="96" loading="lazy" alt="Vinyl Toy skin: the listening pill and the bubble"><figcaption>Vinyl Toy</figcaption></figure>
+      <figure class="skin"><img src="assets/app/skin-sticker.webp" width="284" height="96" loading="lazy" alt="Sticker Bomb skin: the listening pill and the bubble"><figcaption>Sticker Bomb</figcaption></figure>
+      <figure class="skin"><img src="assets/app/skin-twoink.webp" width="284" height="96" loading="lazy" alt="Two-Ink skin: the listening pill and the bubble"><figcaption>Two-Ink</figcaption></figure>
+    </div>
+    <p class="note center reveal">Chapter 1 · First drop. A skin restyles the bubble and Blot on Home; the app keeps its colours.</p>
+  </div>
+</section>
+
+<!-- 4. HOW IT WORKS: pinned on desktop, stacked on phones -->
 <section class="how" id="how" aria-labelledby="how-h">
   <div class="how-pin" data-scrub="how">
     <div class="how-stage">
@@ -230,7 +281,7 @@
   </div>
 </section>
 
-<!-- 3. ONE BUBBLE, EVERY APP -->
+<!-- 5. ONE BUBBLE, EVERY APP -->
 <section class="apps" id="apps" aria-labelledby="apps-h">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -246,7 +297,7 @@
   </div>
 </section>
 
-<!-- 4. OFFLINE -->
+<!-- 6. OFFLINE -->
 <section class="offline" id="offline" aria-labelledby="off-h">
   <div class="wrap off-grid" data-scrub="offline">
     <div class="off-copy">
@@ -262,47 +313,6 @@
       <div class="glow" aria-hidden="true"></div>
       <div class="phone" data-phone="offline" style="--ps:.62" aria-hidden="true"></div>
       <p class="toast" role="note"><span class="tick">✓</span> Typed on the phone, offline. Shown typed, not sent: sending still needs signal.</p>
-    </div>
-  </div>
-</section>
-
-<!-- 5. UNLOCKS: a hint only; the skins, voices and moves are found in the app -->
-<section class="unlock" id="unlock" aria-labelledby="ul-h">
-  <div class="wrap">
-    <div class="unlock-card reveal">
-      <span class="mini" data-dot></span>
-      <div>
-        <h2 id="ul-h">Talk more.<br><span class="grey">Unlock more.</span></h2>
-        <p class="sub">The more you talk, the more Blot has to show you. New looks, voices and moves, earned just by using it. Nothing to buy.</p>
-        <a href="/features.html">See everything it does →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 6. TRY THE CLEANUP -->
-<section class="try" id="try" aria-labelledby="try-h">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <h2 id="try-h">Try the cleanup.<br><span class="grey">Type like you talk.</span></h2>
-      <p class="sub">This is the same rule-based cleanup the app runs first, running here in your browser. The app can also polish with an on-device AI model.</p>
-    </div>
-    <div class="try-card reveal">
-      <label for="try-in" class="tag">You say</label>
-      <textarea id="try-in" rows="3" spellcheck="false">um, I'm running fifteen minutes late. uh, can we push the call to two, I mean three pm?</textarea>
-      <div class="try-bar">
-        <div class="ex" role="group" aria-label="Examples">
-          <button type="button" data-ex="um, I land at six, I mean seven pm. uh, can you pick me up?">Airport</button>
-          <button type="button" data-ex="send it to mark, I mean john">Wrong name</button>
-          <button type="button" data-ex="uh, can you book a table for twelve, I mean fourteen people? um, thanks!">Booking</button>
-          <button type="button" data-ex="shopping list one eggs two flour three sugar">List</button>
-        </div>
-        <button type="button" class="cta" id="try-go">Clean it up</button>
-      </div>
-      <div class="try-out" aria-live="polite">
-        <div><span class="tag">What it heard</span><p class="diff" id="try-diff"></p></div>
-        <div><span class="tag acc">What it types</span><p class="result" id="try-res"></p></div>
-      </div>
     </div>
   </div>
 </section>
