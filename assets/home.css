@@ -389,8 +389,10 @@ footer .fine { margin-top: 14px; font-size: 14px; }
 .blot-copy .sub { margin: 0 0 12px; }
 .blot-copy a { font: 800 17px var(--f-head); }
 .blot .skins { display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 980px; margin: 36px auto 10px; }
-.blot .skin { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 14px 12px 12px; text-align: center; }
-.blot .skin img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.blot .skin { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px 16px 14px; text-align: center; }
+.blot .skin img { display: block; height: auto; margin: 0 auto; }
+.blot .skin .sk-dot { width: 46%; max-width: 132px; margin-bottom: 14px; filter: drop-shadow(0 8px 14px rgba(0,0,0,.18)); }
+.blot .skin .sk-pill { width: 100%; }
 .blot .skin figcaption { margin-top: 8px; font: 800 16px var(--f-head); color: var(--ink); }
 @media (max-width: 760px) { .blot-grid { grid-template-columns: 1fr; } .blot-stage { min-height: 220px; } .blot .skins { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .final .mini.big { display: block; margin: 0 auto 22px; filter: drop-shadow(0 14px 22px rgba(var(--acc-rgb), .35)); }
