@@ -2,13 +2,13 @@
 
 > KisuKisu is a free voice-typing app for Android. You talk the way you talk (ums, restarts, "I mean") and it types clean text. A floating bubble next to your keyboard works in any app. Speech recognition and cleanup run on the phone, so it works offline and in airplane mode, with no account.
 
-KisuKisu is made by Akhil Srinivas. It is in closed testing on Google Play (package com.kisukisu.app). To join the Android beta, fill in the form at https://forms.gle/dwdAoq4V1xZWSHcG6 . Contact: kisukisuapp@gmail.com.
+KisuKisu is made by Akhil Srinivas. It is free on Google Play (package com.kisukisu.app): https://play.google.com/store/apps/details?id=com.kisukisu.app . Contact: kisukisuapp@gmail.com.
 
 ## Key facts for citation
 
 - Platform: Android 7.0 (API 24) or newer, 64-bit ARM (arm64-v8a) phones. A Mac version is coming soon; there is no iPhone version.
 - Price: free. No account, no sign-up, no ads, no analytics, no crash reporting, no advertising IDs.
-- Availability: closed beta on Google Play; join via https://forms.gle/dwdAoq4V1xZWSHcG6 .
+- Availability: free on Google Play, Android 7.0 and up: https://play.google.com/store/apps/details?id=com.kisukisu.app .
 - Language: English.
 - On-device: speech-to-text and the AI cleanup both run on the phone. After a one-time model download, dictation works offline and in airplane mode.
 - Network use: model downloads (from Hugging Face) only. Cloud speech/AI providers (OpenAI, Groq, Anthropic, OpenRouter, Vercel AI Gateway, or a custom endpoint) are optional, off by default, and use the user's own API key.
@@ -30,7 +30,7 @@ KisuKisu is made by Akhil Srinivas. It is in closed testing on Google Play (pack
 
 ## Pages
 
-- [Home](https://kisukisu-app.github.io/): what KisuKisu does, features, how it works, FAQ, beta sign-up.
+- [Home](https://kisukisu-app.github.io/): what KisuKisu does, features, how it works, FAQ, Google Play link.
 - [Offline voice typing](https://kisukisu-app.github.io/offline-voice-typing.html): voice typing that works in airplane mode; what runs on the phone and what needs the internet.
 - [Private voice typing](https://kisukisu-app.github.io/private-voice-typing.html): no account, nothing uploaded; what stays on the phone, what goes over the network, and each permission explained.
 - [Voice typing in any app](https://kisukisu-app.github.io/voice-typing-any-app.html): the floating bubble in WhatsApp, Gmail, Slack and Notes; tap or hold to talk; typed in or copied.
