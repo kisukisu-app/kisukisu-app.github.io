@@ -397,3 +397,7 @@ footer .fine { margin-top: 14px; font-size: 14px; }
 @media (max-width: 760px) { .blot-grid { grid-template-columns: 1fr; } .blot-stage { min-height: 220px; } .blot .skins { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .final .mini.big { display: block; margin: 0 auto 22px; filter: drop-shadow(0 14px 22px rgba(var(--acc-rgb), .35)); }
 .foot-in { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+.play-badge { display: inline-block; line-height: 0; border-radius: 10px; transition: transform .15s ease, opacity .15s ease; }
+.play-badge:hover { transform: translateY(-2px); }
+.play-badge img { height: 60px; width: auto; display: block; }

@@ -182,3 +182,7 @@ footer .fine { margin-top: 14px; font-size: 14px; }
 .vline { display: block; background: #2A1033; color: #fff; border: 2px solid #5B2A6E; border-radius: 999px; padding: 8px 10px; font-size: 14px; font-weight: 800; }
 .voice b { display: block; margin-top: 10px; font-size: 18px; }
 @media (max-width: 700px) { .voices { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.play-badge { display: inline-block; line-height: 0; border-radius: 10px; transition: transform .15s ease, opacity .15s ease; }
+.play-badge:hover { transform: translateY(-2px); }
+.play-badge img { height: 60px; width: auto; display: block; }
